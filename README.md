@@ -1,4 +1,4 @@
 # TypeSpace
 
 Group members:
-*Jake Soulier
+* Jake Soulier
