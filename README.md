@@ -3,6 +3,7 @@
 Group members:
 * Jake Soulier
 * Carlos Lespin
+* Xander Hunt
 
 # Tutorials
 
