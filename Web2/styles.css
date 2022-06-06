@@ -4,91 +4,91 @@ body {
     max-width: 1000px;
 }
 
-.spaceBackground{
+.spaceBackground {
     width: 1920px;
     height: 1080px;
-        }
-    
-    .spaceBackground img{
+}
+
+.spaceBackground img {
     float: left;
     margin-left: 0px 0px 0px 30px;
     width: 1920px;
     height: 1080px;
-    }
+}
 
-#spaceShip{
-        width: 640px;
-        height: 480px;
-            }
-        
-        #spaceShip img{
-        float: left;
-        margin-left: 0px 0px 0px 30px;
-        width: 340px;
-        height: 200px;
-        position: absolute;
-        top: 450px;
-        left: 25px;
-        }   
+#spaceShip {
+    width: 640px;
+    height: 480px;
+}
 
-#meteor{
-        width: 640px;
-        height: 480px;
-            }
-        
-        #meteor img{
+#spaceShip img {
+    float: left;
+    margin-left: 0px 0px 0px 30px;
+    width: 340px;
+    height: 200px;
+    position: absolute;
+    top: 450px;
+    left: 25px;
+}
+
+#meteor {
+    width: 640px;
+    height: 480px;
+}
+
+
+/* #meteor img{
         float: left;
         width: 300px;
         height: 300px;
         position: absolute;
         top: 420px;
         left: 1720px;
-        }   
+        }    */
 
-
-#life1{
-        width: 200px;
-        height:200px;
-            }
-        
-        #life1 img{
-        float: left;
-        width: 50px;
-        height: 50px;
-        position: absolute;
-        top: 20px;
-        left: 20px;
-}   
-
-#life2{
+#life1 {
     width: 200px;
-    height:200px;
-        }
-    
-    #life2 img{
+    height: 200px;
+}
+
+#life1 img {
+    float: left;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+#life2 {
+    width: 200px;
+    height: 200px;
+}
+
+#life2 img {
     float: left;
     width: 50px;
     height: 50px;
     position: absolute;
     top: 20px;
     left: 80px;
-}   
+}
 
-#life3{
+#life3 {
     width: 200px;
-    height:200px;
-        }
-    
-    #life3 img{
+    height: 200px;
+}
+
+#life3 img {
     float: left;
     width: 50px;
     height: 50px;
     position: absolute;
     top: 20px;
     left: 140px;
-}   
+}
 
-#score{
+#score {
     float: left;
     position: absolute;
     color: white;

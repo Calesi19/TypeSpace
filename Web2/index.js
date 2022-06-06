@@ -5,26 +5,35 @@
 
 
 */
+FPS = 10;
+setInterval(meteorLeft, FPS);
 
+function meteorLeft() { // moves the meteor left across the screen
+    var step = 5;
+    var y = document.getElementById('meteor').offsetLeft;
+    y = y - step;
+    document.getElementById('meteor').style.left = y + "px";
+
+}
 
 
 document.addEventListener('keydown', function(event) {
-    if(event.keyCode == 81) {
-        alert('Q was pressed');
-    }
-    else if(event.keyCode == 87) {
+    // var step = 50;
+    if (event.keyCode == 65) {
+        alert('A was pressed');
+        // var y = document.getElementById('meteor').offsetLeft;
+        // y = y - step;
+        // document.getElementById('meteor').style.left = y + "px";
+    } else if (event.keyCode == 87) {
         alert('W was pressed');
-    }
-    else if(event.keyCode == 69) {
+    } else if (event.keyCode == 69) {
         alert('E was pressed');
     }
-    if(event.keyCode == 82) {
+    if (event.keyCode == 82) {
         alert('R was pressed');
-    }
-    else if(event.keyCode == 84) {
+    } else if (event.keyCode == 84) {
         alert('T was pressed');
-    }
-    else if(event.keyCode == 89) {
+    } else if (event.keyCode == 89) {
         alert('Y was pressed');
     }
 
@@ -32,11 +41,6 @@ document.addEventListener('keydown', function(event) {
 
 var object = document.getElementById('meteor');
 
-for (var i = 0; i < 1720; i++){
+for (var i = 0; i < 1720; i++) {
     object.style.left = parseInt(object.style.left - 1) + 'px';
 }
-
-
-
-
-
