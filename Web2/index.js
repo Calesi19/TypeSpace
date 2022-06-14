@@ -16,7 +16,7 @@ canvas.width = 1920//window.innerWidth
 canvas.height = 1080//window.innerHeight
 
 c.textAlign = "left";
-c.fillStyle = "black";
+c.fillStyle = "white";
 
 
 var velocity = 1;
@@ -65,6 +65,16 @@ class Player {
                 y: (canvas.height / 2) - (this.height) + 50
             }
         }     
+    }
+
+    draw(){
+        if(this.image)
+            c.drawImage(
+                this.image, 
+                this.position.x, 
+                this.position.y,
+                this.width,
+                this.height)
     }
 }
 
@@ -135,9 +145,11 @@ function update(){
     c.clearRect(0, 0, canvas.width, canvas.height);
     c.drawImage(video,0,0,1920,1080);
 
+    
     for (var i = 0; i < actors.meteors.length; i++){
         actors.meteors[i].draw()
     }
+
 
     for (var i = 0; i < actors.meteors.length; i++){
         if (actors.meteors[i].x < 50) {
@@ -150,10 +162,12 @@ function update(){
         actors.spawnMeteor()
         score.score += 1
     }
-
+    
     score.increment()
     score.draw()
-    player.draw();
+    player.draw()
     velocity = velocity + .0001
     requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.       
 }
+
+
