@@ -4,44 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load static %} 
-    <link rel="stylesheet" type="text/css" href="{% static '/css/styles2.css' %}">
+    {% load static %}
     <title>Document</title>
+    {% comment %} <embed src="material/spaceRace.mp3" loop="true" autostart="true" width="2" height="0"></embed> {% endcomment %}
 </head>
 <body>
-    <div id="spacebackground">
-        <img src="{% static '/img/spaceBackground.jpg' %}"/>
-    </div>
-    {% comment %} <video width="1920" height="1080" autoplay muted>
-        <source src='{% static "/img/spaceBackGroundMoving.mp4" %}' type="video/mp4">
-        <source src='{% static "/img/spaceBackGroundMoving.mp4" %}' type="video/ogg">
-    </video> {% endcomment %}
-    <embed src="{% static '/img/spaceRace.mp3' %}" loop="true" autostart="true" width="2" height="0"></embed>
-    </div>
-    <div id="spaceShip">
-        <img src="{% static '/img/spaceShip.png' %}"/>
-    </div>
-    <div id="meteor"> 
-        <img src="{% static '/img/meteor.png' %}"/>
-    </div>
-    <div id="life1">
-        <img src="{% static '/img/heart.png' %}"/>
-    </div>
-    <div id="life2">
-        <img src="{% static '/img/heart.png' %}"/>
-    </div>
-    <div id="life3">
-        <img src="{% static '/img/heart.png' %}"/>
-    </div>
+    <canvas id="canV" width="1920" height="1080" style="background: url('/static/img/spaceBackground.jpg')"></canvas>
 
-    <div id="score">
-        <p>SCORE: 0</p>
-    </div>
-
-    <script src="{% static '/js/index.js' %}" type="text/javascript"></script>
-
-
-
-
+    <script src="{% static '/js/index3.js' %}" type="text/javascript"></script>
 </body>
 </html>
