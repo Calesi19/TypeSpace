@@ -172,16 +172,20 @@ class Meteor{
     }
 
     draw(){
-        if(this.image) 
-        this.x = this.x - (velocity * this.speeder);
-        c.font = parseInt((50)) + 'px monospace';
-        c.drawImage(
-                this.image, 
-                this.x, 
-                this.y,
-                this.width,
-                this.height)
-        c.fillText(this.word, this.x, this.y + 100)
+        if(this.image) { 
+            this.x = this.x - (velocity * this.speeder);
+            c.font = parseInt((50)) + 'px monospace';
+            if (typeof this.image == undefined) {
+                console.log('Hey man your image is undefined again.')
+            }
+            c.drawImage(
+                    this.image, 
+                    this.x, 
+                    this.y,
+                    this.width,
+                    this.height)
+            c.fillText(this.word, this.x, this.y + 100)
+        }
     }
 
     getRandomWord(){
