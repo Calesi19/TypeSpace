@@ -205,13 +205,8 @@ class Actors {
     }
 
     checkMeteorMatch(targetWord) {
-        // console.log('checkMeteorMatch lvl 1', targetWord)
-        console.log(targetWord)
         for (let i = 0; i < this.meteors.length; i++) {
-            // console.log('checkMeteorMatch lvl 2')
-            console.log(this.meteors[i].word, targetWord)
             if (this.meteors[i].word == targetWord) {
-                console.log('checkMeteorMatch lvl 3')
                 this.destroyMeteor(i)
                 this.spawnMeteor()
             }
@@ -228,8 +223,6 @@ class Input {
 
     addLetter(character) {
         this.targetWord.push(character)
-        // console.log(character)
-        // console.log(this.targetWord)
     }
 
     deleteLetter() {
@@ -242,8 +235,6 @@ class Input {
         for (let character in this.targetWord) {
             current_word = current_word + this.targetWord[character];
         }
-        console.log(this.targetWord)
-        console.log(current_word)
         this.targetWord = [];
         actors.checkMeteorMatch(current_word);
     }
@@ -263,7 +254,6 @@ const life = new Life()
 
 
 document.addEventListener('keydown', function(e) {
-    console.log('hey you pushed something')
     switch(e.keyCode) {
         case 13: // enter
             input.checkWord();
