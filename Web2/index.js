@@ -265,7 +265,7 @@ const life = new Life()
 document.addEventListener('keydown', function(e) {
     console.log('hey you pushed something')
     switch(e.keyCode) {
-        case 32: // enter
+        case 13: // enter
             input.checkWord();
             break;
         case 32: // spacebar
