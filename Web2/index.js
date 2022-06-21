@@ -192,6 +192,7 @@ class Meteor{
                     this.height)
             c.fillText(this.word, this.x, this.y + 100)
         }
+    }
 
     getRandomWord(){
         const words = ["HELLO", "CES", "CAR", "FRIEND", "NO", "YES", "GOODBYE"];
