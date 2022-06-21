@@ -183,6 +183,13 @@ class Input {
         actors.checkMeteorMatch(current_word);
     }
 
+    displayLetter(letter) {
+        c.fillStyle = 'orange';
+        c.font = '100px serif';
+        c.fillText(letter, 1000, 1000);
+        c.fillStyle = 'white';
+    }
+
 }
 
 const input = new Input();
@@ -221,7 +228,7 @@ function update() {
 document.addEventListener('keydown', function(e) {
     console.log('hey you pushed something')
     switch (e.keyCode) {
-        case 32: // enter
+        case 13: // enter
             // console.log('enter');
             input.checkWord();
             break;
@@ -234,7 +241,9 @@ document.addEventListener('keydown', function(e) {
             break;
         case 65: // a
             // console.log('a');
+            input.displayLetter('a')
             input.addLetter('A')
+
             break;
         case 66: // b
             input.addLetter('B')
