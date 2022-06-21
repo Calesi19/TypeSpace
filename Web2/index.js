@@ -238,6 +238,10 @@ class LifeBonus{
         const words = ["HELLO", "CES", "CAR", "FRIEND", "NO", "YES", "GOODBYE"];
         return words[Math.floor(Math.random()* words.length)];
     }
+
+    incrementFrequency() {
+        this.frequency += 1;
+    }
 } 
 
 
@@ -269,13 +273,20 @@ class Actors {
         this.lives.push(new LifeBonus())
     }
 
-    destroyLife() {
+    destroyLife(index) {
         this.lives.splice(index, 1);
     }
 
-    incrementFrequency() {
-        this.frequency += 1;
+    checkLifeMatch(targetWord, life) {
+        for (let i = 0; i < this.lives.length; i++) {
+            console.log(this.lives[i].word, targetWord)
+            if (this.lives[i].word == targetWord) {
+                this.destroyLife(i)
+                life.addLife();
+            }
+        }
     }
+
 
 
 }
@@ -296,7 +307,7 @@ class Input {
         this.targetWord.pop()
     }
     
-    checkWord() {
+    checkWord(life) {
         // basically check to see if this word is in any of the meteors, delete the meteors that it matches
         let current_word = '';
         for (let character in this.targetWord) {
@@ -304,6 +315,7 @@ class Input {
         }
         this.targetWord = [];
         actors.checkMeteorMatch(current_word);
+        actors.checkLifeMatch(current_word, life);
     }
 
     draw() {
@@ -311,15 +323,15 @@ class Input {
         c.fillText(this.targetWord.join(""), 15, 1000)
     }
 
-    checkForInput() {
+    checkForInput(life) {
         document.addEventListener('keydown', function(e) {
             console.log('hey you pushed something')
             switch(e.keyCode) {
                 case 13: // enter
-                    input.checkWord();
+                    input.checkWord(life);
                     break;
                 case 32: // spacebar
-                    input.checkWord();
+                    input.checkWord(life);
                     break;
                 case 8: // backspace
                     input.deleteLetter();
@@ -413,7 +425,10 @@ const score = new Score()
 const player = new Player()
 const actors = new Actors();
 const life = new Life();
-input.checkForInput()
+input.checkForInput(life)
+
+var lifeFrequency = 0;
+
 
 function update(){
     
@@ -451,22 +466,20 @@ function update(){
     }
 
 
-    if (true){
-        actors.spawnLife();
-    }
-
-
     score.increment()
     score.draw()
     player.draw()
     velocity = velocity + .0001
-    if (life.frequency == 100) {
-        life.spawnLife()
-        life.frequency = 0;
+    life.draw()
+    input.draw()
+
+    lifeFrequency += 1;
+    if (lifeFrequency == 100000) {
+        actors.spawnLife()
+        lifeFrequency = 0;
     }
 
-    input.draw()
-    
+
     requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
     
 }
