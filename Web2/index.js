@@ -22,14 +22,55 @@ c.fillStyle = "white";
 var velocity = 1;
 
 
-function generateRandom(maxLimit = 100){
-    let rand = Math.random() * maxLimit;
-    console.log(rand); // say 99.81321410836433
-  
-    rand = Math.floor(rand); // 99
-  
-    return rand;
-  }
+
+
+
+
+
+
+class Planet {
+    constructor(planetChoice) {
+        this.frequency = 0
+        this.word = this.getRandomWord();
+        this.speeder = (Math.floor(Math.random() * 3)) + 1
+        this.velocity = .25
+        const image = new Image()
+        image.src = planetChoice
+        image.onload = () => {
+            this.image = image
+            this.width = 400
+            this.height = 400
+            this.x = canvas.width - this.width + 500 
+            this.y = Math.floor(Math.random() * (900 - 100 + 1) + 100)
+        }     
+    }
+
+
+    draw(){
+        if(this.image) {
+        this.x = this.x - this.velocity;
+        c.drawImage(
+                this.image, 
+                this.x, 
+                this.y,
+                this.width,
+                this.height)
+        }
+    }
+
+    getRandomWord(){
+        const words = ["HELLO", "CES", "CAR", "FRIEND", "NO", "YES", "GOODBYE"];
+        return words[Math.floor(Math.random()* words.length)];
+    }
+
+    incrementFrequency() {
+        this.frequency += 1;
+    }
+
+
+
+}
+
 
 
 class Life {
@@ -217,21 +258,25 @@ class LifeBonus{
             this.width = image.width * scale
             this.height = image.height * scale
             this.x = canvas.width - this.width + 500 
-            this.y = (canvas.height) - this.height - (Math.random() * window.innerHeight)
+            this.y = Math.floor(Math.random() * (900 - 100 + 1) + 100)
         }     
     }
 
     draw(){
-        if(this.image) 
-        this.x = this.x - (velocity * this.speeder);
-        c.font = parseInt((50)) + 'px monospace';
-        c.drawImage(
-                this.image, 
-                this.x, 
-                this.y,
-                this.width,
-                this.height)
-        c.fillText(this.word, this.x, this.y + 100)
+        if(this.image) { 
+            this.x = this.x - (velocity * this.speeder);
+            c.font = parseInt((50)) + 'px monospace';
+            if (typeof this.image == undefined) {
+                console.log('Hey man your image is undefined again.')
+            }
+            c.drawImage(
+                    this.image, 
+                    this.x, 
+                    this.y,
+                    this.width,
+                    this.height)
+            c.fillText(this.word, this.x, this.y + 100)
+        }
     }
 
     getRandomWord(){
@@ -247,8 +292,27 @@ class LifeBonus{
 
 class Actors {
     constructor() {
+        this.planetChoice = ['./material/planet1.png', './material/planet2.png', './material/planet3.png', './material/planet4.png', './material/planet5.png']
         this.meteors = [new Meteor(), new Meteor(), new Meteor()];
         this.lives = []
+        this.planets = [new Planet(this.choosePlanet())]
+        
+    }
+
+    choosePlanet() {
+        if (this.planetChoice.length != 0){
+            var choice = Math.floor(Math.random() * this.planetChoice.length)
+            var planetAddress =  this.planetChoice[choice]
+            this.planetChoice.splice(choice, 1);
+            return planetAddress
+        }
+        else {
+            this.planetChoice = ['./material/planet1.png', './material/planet2.png', './material/planet3.png', './material/planet4.png', './material/planet5.png']
+            var choice = Math.floor(Math.random() * this.planetChoice.length)
+            var planetAddress =  this.planetChoice[choice]
+            this.planetChoice.splice(choice, 1);
+            return planetAddress
+        }
     }
 
     spawnMeteor() {
@@ -285,6 +349,14 @@ class Actors {
                 life.addLife();
             }
         }
+    }
+
+    spawnPlanet(){
+        this.planets.push(new Planet(this.choosePlanet()));
+    }
+
+    destroyPlanet(index){
+        this.planets.splice(index, 1);
     }
 
 
@@ -435,7 +507,24 @@ function update(){
     c.clearRect(0, 0, canvas.width, canvas.height);
     c.drawImage(video,0,0,1920,1080);
 
+
     
+    
+    for (var i = 0; i < actors.planets.length; i++){
+        if (actors.planets.length != 0) {
+            if (actors.planets[i].x < -500){
+                actors.destroyPlanet(i)   
+                actors.spawnPlanet()
+            }
+        }
+    }
+
+
+    for (var i = 0; i < actors.planets.length; i++){
+        if (actors.planets.length != 0) {
+            actors.planets[i].draw()
+        }
+    }
 
     for (var i = 0; i < actors.meteors.length; i++){
         if (actors.meteors[i].x < 50) {
@@ -446,6 +535,11 @@ function update(){
                 alert("Game Over")
             }
         }
+    }
+
+    if (Math.floor(score.getScore()) % 100 == 0) {
+        actors.spawnMeteor()
+        score.score += 1
     }
 
     if (Math.floor(score.getScore()) % 100 == 0) {
@@ -474,7 +568,7 @@ function update(){
     input.draw()
 
     lifeFrequency += 1;
-    if (lifeFrequency == 100000) {
+    if (lifeFrequency == 1000) {
         actors.spawnLife()
         lifeFrequency = 0;
     }
