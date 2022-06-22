@@ -173,7 +173,7 @@ class Meteor{
             this.width = image.width * scale
             this.height = image.height * scale
             this.x = canvas.width - this.width + 500 
-            this.y = (canvas.height) - this.height - (Math.random() * window.innerHeight)
+            this.y = Math.floor(Math.random() * (900 - 100 + 1) + 100)
         }     
     }
 
@@ -469,7 +469,7 @@ function update(){
     score.increment()
     score.draw()
     player.draw()
-    velocity = velocity + .0001
+    velocity =  velocity + .0001
     life.draw()
     input.draw()
 
