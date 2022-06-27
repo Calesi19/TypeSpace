@@ -1,5 +1,3 @@
-
-
 var canvas = document.getElementById("canV");
 var c = canvas.getContext("2d");
 
@@ -333,19 +331,34 @@ class Actors {
 
     checkActorMatch(targetWord, life) {
         for (let i = 0; i < this.meteors.length; i++) {
-            console.log(this.meteors[i].word, targetWord)
             if (this.meteors[i].word == targetWord) {
+                this.drawLaser(this.meteors[i].x, this.meteors[i].y)
                 this.destroyMeteor(i)
                 this.spawnMeteor()
             }
         }
         for (let i = 0; i < this.lives.length; i++) {
-            console.log(this.lives[i].word, targetWord)
             if (this.lives[i].word == targetWord) {
                 this.destroyLife(i)
                 life.addLife();
             }
         }
+    }
+
+    drawLaser(objectX, objectY) {
+        // Draw a laser here from the ship to the actor being destroyed
+        
+        const ctx = canvas.getContext('2d');
+        
+        // set line stroke and line width
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 5;
+
+        // draw a red line
+        ctx.beginPath();
+        ctx.moveTo(50, (canvas.height / 2) - (this.height) + 50);
+        ctx.lineTo(objectX, objectY);
+        ctx.stroke();
     }
 
     spawnPlanet(){
@@ -393,7 +406,6 @@ class Input {
 
     checkForInput(life) {
         document.addEventListener('keydown', function(e) {
-            console.log('hey you pushed something')
             switch(e.keyCode) {
                 case 13: // enter
                     input.checkWord(life);
