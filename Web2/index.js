@@ -323,16 +323,6 @@ class Actors {
         this.meteors.splice(index, 1);
     }
 
-    checkMeteorMatch(targetWord) {
-        for (let i = 0; i < this.meteors.length; i++) {
-            console.log(this.meteors[i].word, targetWord)
-            if (this.meteors[i].word == targetWord) {
-                this.destroyMeteor(i)
-                this.spawnMeteor()
-            }
-        }
-    }
-
     spawnLife() {
         this.lives.push(new LifeBonus())
     }
@@ -341,7 +331,14 @@ class Actors {
         this.lives.splice(index, 1);
     }
 
-    checkLifeMatch(targetWord, life) {
+    checkActorMatch(targetWord, life) {
+        for (let i = 0; i < this.meteors.length; i++) {
+            console.log(this.meteors[i].word, targetWord)
+            if (this.meteors[i].word == targetWord) {
+                this.destroyMeteor(i)
+                this.spawnMeteor()
+            }
+        }
         for (let i = 0; i < this.lives.length; i++) {
             console.log(this.lives[i].word, targetWord)
             if (this.lives[i].word == targetWord) {
@@ -386,8 +383,7 @@ class Input {
             current_word = current_word + this.targetWord[character];
         }
         this.targetWord = [];
-        actors.checkMeteorMatch(current_word);
-        actors.checkLifeMatch(current_word, life);
+        actors.checkActorMatch(current_word, life);
     }
 
     draw() {
