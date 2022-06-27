@@ -368,7 +368,6 @@ class Input {
     deleteLetter() {
         this.targetWord.pop()
     }
-
     checkWord(life) {
         // basically check to see if this word is in any of the meteors, delete the meteors that it matches
         let current_word = '';
