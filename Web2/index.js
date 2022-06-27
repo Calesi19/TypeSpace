@@ -347,18 +347,16 @@ class Actors {
 
     drawLaser(objectX, objectY) {
         // Draw a laser here from the ship to the actor being destroyed
-        
-        const ctx = canvas.getContext('2d');
-        
+                
         // set line stroke and line width
-        ctx.strokeStyle = 'red';
-        ctx.lineWidth = 5;
+        c.strokeStyle = 'red';
+        c.lineWidth = 5;
 
         // draw a red line
-        ctx.beginPath();
-        ctx.moveTo(50, (canvas.height / 2) - (this.height) + 50);
-        ctx.lineTo(objectX, objectY);
-        ctx.stroke();
+        c.beginPath();
+        c.moveTo(50, (canvas.height / 2) - (this.height) + 50);
+        c.lineTo(objectX, objectY);
+        c.stroke();
     }
 
     spawnPlanet(){
