@@ -337,7 +337,6 @@ class Actors {
         }
     }
 
-<<<<<<< HEAD
     drawLaser(objectX, objectY) {
         // Draw a laser here from the ship to the actor being destroyed
                 
@@ -353,9 +352,6 @@ class Actors {
     }
 
     spawnPlanet(){
-=======
-    spawnPlanet() {
->>>>>>> 750229b178790c8c1df5ae53f472f83a3cf9ae5e
         this.planets.push(new Planet(this.choosePlanet()));
     }
 
@@ -399,12 +395,7 @@ class Input {
 
     checkForInput(life) {
         document.addEventListener('keydown', function(e) {
-<<<<<<< HEAD
             switch(e.keyCode) {
-=======
-            console.log('hey you pushed something')
-            switch (e.keyCode) {
->>>>>>> 750229b178790c8c1df5ae53f472f83a3cf9ae5e
                 case 13: // enter
                     input.checkWord(life);
                     break;
