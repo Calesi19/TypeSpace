@@ -1,16 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load static %}
+    
     <title>Document</title>
-    {% comment %} <embed src="material/spaceRace.mp3" loop="true" autostart="true" width="2" height="0"></embed> {% endcomment %}
+    <embed src="material/spaceRace.mp3" loop="true" autostart="true" width="2" height="0"></embed>
 </head>
 <body>
     <canvas id="canV" width="1920" height="1080" style="background: url('/static/img/spaceBackground.jpg')"></canvas>
-
-    <script src="{% static '/js/index3.js' %}" type="text/javascript"></script>
+    {% comment %} {% for obs in words %}   
+    {% comment %} <tr> {% endcomment %}
+        {% comment %} <p>why</p> {% endcomment %}
+        {% comment %} <td>{{ obs.word }}</td> {% endcomment %}
+        {% comment %} <td>yes</td> {% endcomment %}
+    {% comment %} </tr> {% endcomment %}
+    {% comment %} {% endfor %} {% endcomment %}
+    {% comment %} <td>no</td> {% endcomment %} 
+    
+    <script src="{% static '/js/index4.js' %}" type="text/javascript"></script>
 </body>
 </html>
