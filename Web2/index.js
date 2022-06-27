@@ -4,14 +4,14 @@ var c = canvas.getContext("2d");
 
 var video = document.createElement("video");
 video.src = "material/spaceBackGroundMoving.mp4";
-
+video.muted = 'none';
 video.addEventListener('loadeddata', function() {
-  video.play();  // start playing
-  update(); //Start rendering
+    video.play(); // start playing
+    update(); //Start rendering
 })
 
-canvas.width = 1920//window.innerWidth
-canvas.height = 1080//window.innerHeight
+canvas.width = 1920 //window.innerWidth
+canvas.height = 1080 //window.innerHeight
 
 c.textAlign = "left";
 c.fillStyle = "white";
@@ -38,27 +38,27 @@ class Planet {
             this.image = image
             this.width = 400
             this.height = 400
-            this.x = canvas.width - this.width + 500 
+            this.x = canvas.width - this.width + 500
             this.y = Math.floor(Math.random() * (900 - 100 + 1) + 100)
-        }     
+        }
     }
 
 
-    draw(){
-        if(this.image) {
-        this.x = this.x - this.velocity;
-        c.drawImage(
-                this.image, 
-                this.x, 
+    draw() {
+        if (this.image) {
+            this.x = this.x - this.velocity;
+            c.drawImage(
+                this.image,
+                this.x,
                 this.y,
                 this.width,
                 this.height)
         }
     }
 
-    getRandomWord(){
+    getRandomWord() {
         const words = ["HELLO", "CES", "CAR", "FRIEND", "NO", "YES", "GOODBYE"];
-        return words[Math.floor(Math.random()* words.length)];
+        return words[Math.floor(Math.random() * words.length)];
     }
 
     incrementFrequency() {
@@ -76,45 +76,37 @@ class Life {
         this.life = 3
         this.image;
         this.loadImage()
-        
+
     }
 
-    loseLife(){
+    loseLife() {
         this.life -= 1
     }
 
-    addLife(){
-        if (this.life != 5) 
+    addLife() {
+        if (this.life != 5)
             this.life += 1
     }
 
-    getLife(){
+    getLife() {
         return this.life;
     }
 
-    loadImage(){
+    loadImage() {
         const image = new Image()
 
-        if (this.life == 1){
+        if (this.life == 1) {
             image.src = './material/life1.png'
-        }
-
-        else if (this.life == 2){
+        } else if (this.life == 2) {
             image.src = './material/life2.png'
-        }
-
-        else if (this.life == 3){
+        } else if (this.life == 3) {
             image.src = './material/life3.png'
-        }
-
-        else if (this.life == 4) {
+        } else if (this.life == 4) {
             image.src = './material/life4.png'
-        }
-
-        else if (this.life == 5) {
+        } else if (this.life == 5) {
             image.src = './material/life5.png'
         }
-        
+
         image.onload = () => {
             this.image = image
             this.width = image.width
@@ -123,19 +115,20 @@ class Life {
                 x: 10,
                 y: 75
             }
-    }}
+        }
+    }
 
-    draw(){
-        
+    draw() {
+
         this.loadImage()
 
         c.drawImage(
-            this.image, 
-            this.position.x, 
+            this.image,
+            this.position.x,
             this.position.y,
             this.width,
             this.height)
-}
+    }
 }
 
 
@@ -162,7 +155,7 @@ class Score {
     }
 
     draw() {
-        c.font = + parseInt((50)) + 'px monospace';
+        c.font = +parseInt((50)) + 'px monospace';
         c.fillText('SCORE:' + parseInt(this.score), 15, 50)
     }
 }
@@ -181,14 +174,14 @@ class Player {
                 x: 50,
                 y: (canvas.height / 2) - (this.height) + 50
             }
-        }     
+        }
     }
 
-    draw(){
-        if(this.image)
+    draw() {
+        if (this.image)
             c.drawImage(
-                this.image, 
-                this.position.x, 
+                this.image,
+                this.position.x,
                 this.position.y,
                 this.width,
                 this.height)
@@ -196,14 +189,14 @@ class Player {
 }
 
 
-class Meteor{
+class Meteor {
     constructor() {
         this.word = this.getRandomWord();
         this.speeder = (Math.floor(Math.random() * 3)) + 1
         this.velocity = {
-        x:0,
-        y:0
-    }
+            x: 0,
+            y: 0
+        }
         const image = new Image()
         image.src = './material/Asteroid.gif'
         image.onload = () => {
@@ -211,43 +204,43 @@ class Meteor{
             this.image = image
             this.width = image.width * scale
             this.height = image.height * scale
-            this.x = canvas.width - this.width + 500 
+            this.x = canvas.width - this.width + 500
             this.y = Math.floor(Math.random() * (900 - 100 + 1) + 100)
-        }     
+        }
     }
 
-    draw(){
-        if(this.image) { 
+    draw() {
+        if (this.image) {
             this.x = this.x - (velocity * this.speeder);
             c.font = parseInt((50)) + 'px monospace';
             if (typeof this.image == undefined) {
                 console.log('Hey man your image is undefined again.')
             }
             c.drawImage(
-                    this.image, 
-                    this.x, 
-                    this.y,
-                    this.width,
-                    this.height)
+                this.image,
+                this.x,
+                this.y,
+                this.width,
+                this.height)
             c.fillText(this.word, this.x, this.y + 100)
         }
     }
 
-    getRandomWord(){
+    getRandomWord() {
         const words = ["HELLO", "CES", "CAR", "FRIEND", "NO", "YES", "GOODBYE"];
-        return words[Math.floor(Math.random()* words.length)];
+        return words[Math.floor(Math.random() * words.length)];
     }
 }
 
-class LifeBonus{
+class LifeBonus {
     constructor() {
         this.frequency = 0
         this.word = this.getRandomWord();
         this.speeder = (Math.floor(Math.random() * 3)) + 1
         this.velocity = {
-        x:0,
-        y:0
-    }
+            x: 0,
+            y: 0
+        }
         const image = new Image()
         image.src = './material/heart.png'
         image.onload = () => {
@@ -255,37 +248,37 @@ class LifeBonus{
             this.image = image
             this.width = image.width * scale
             this.height = image.height * scale
-            this.x = canvas.width - this.width + 500 
+            this.x = canvas.width - this.width + 500
             this.y = Math.floor(Math.random() * (900 - 100 + 1) + 100)
-        }     
+        }
     }
 
-    draw(){
-        if(this.image) { 
+    draw() {
+        if (this.image) {
             this.x = this.x - (velocity * this.speeder);
             c.font = parseInt((50)) + 'px monospace';
             if (typeof this.image == undefined) {
                 console.log('Hey man your image is undefined again.')
             }
             c.drawImage(
-                    this.image, 
-                    this.x, 
-                    this.y,
-                    this.width,
-                    this.height)
+                this.image,
+                this.x,
+                this.y,
+                this.width,
+                this.height)
             c.fillText(this.word, this.x, this.y + 100)
         }
     }
 
-    getRandomWord(){
+    getRandomWord() {
         const words = ["HELLO", "CES", "CAR", "FRIEND", "NO", "YES", "GOODBYE"];
-        return words[Math.floor(Math.random()* words.length)];
+        return words[Math.floor(Math.random() * words.length)];
     }
 
     incrementFrequency() {
         this.frequency += 1;
     }
-} 
+}
 
 
 class Actors {
@@ -294,20 +287,19 @@ class Actors {
         this.meteors = [new Meteor(), new Meteor(), new Meteor()];
         this.lives = []
         this.planets = [new Planet(this.choosePlanet())]
-        
+
     }
 
     choosePlanet() {
-        if (this.planetChoice.length != 0){
+        if (this.planetChoice.length != 0) {
             var choice = Math.floor(Math.random() * this.planetChoice.length)
-            var planetAddress =  this.planetChoice[choice]
+            var planetAddress = this.planetChoice[choice]
             this.planetChoice.splice(choice, 1);
             return planetAddress
-        }
-        else {
+        } else {
             this.planetChoice = ['./material/planet1.png', './material/planet2.png', './material/planet3.png', './material/planet4.png', './material/planet5.png']
             var choice = Math.floor(Math.random() * this.planetChoice.length)
-            var planetAddress =  this.planetChoice[choice]
+            var planetAddress = this.planetChoice[choice]
             this.planetChoice.splice(choice, 1);
             return planetAddress
         }
@@ -345,6 +337,7 @@ class Actors {
         }
     }
 
+<<<<<<< HEAD
     drawLaser(objectX, objectY) {
         // Draw a laser here from the ship to the actor being destroyed
                 
@@ -360,10 +353,13 @@ class Actors {
     }
 
     spawnPlanet(){
+=======
+    spawnPlanet() {
+>>>>>>> 750229b178790c8c1df5ae53f472f83a3cf9ae5e
         this.planets.push(new Planet(this.choosePlanet()));
     }
 
-    destroyPlanet(index){
+    destroyPlanet(index) {
         this.planets.splice(index, 1);
     }
 
@@ -386,7 +382,6 @@ class Input {
     deleteLetter() {
         this.targetWord.pop()
     }
-    
     checkWord(life) {
         // basically check to see if this word is in any of the meteors, delete the meteors that it matches
         let current_word = '';
@@ -398,13 +393,18 @@ class Input {
     }
 
     draw() {
-        c.font = + parseInt((50)) + 'px monospace';
+        c.font = +parseInt((50)) + 'px monospace';
         c.fillText(this.targetWord.join(""), 15, 1000)
     }
 
     checkForInput(life) {
         document.addEventListener('keydown', function(e) {
+<<<<<<< HEAD
             switch(e.keyCode) {
+=======
+            console.log('hey you pushed something')
+            switch (e.keyCode) {
+>>>>>>> 750229b178790c8c1df5ae53f472f83a3cf9ae5e
                 case 13: // enter
                     input.checkWord(life);
                     break;
@@ -508,36 +508,36 @@ input.checkForInput(life)
 var lifeFrequency = 0;
 
 
-function update(){
-    
+function update() {
+
     c.clearRect(0, 0, canvas.width, canvas.height);
-    c.drawImage(video,0,0,1920,1080);
+    c.drawImage(video, 0, 0, 1920, 1080);
 
 
-    
-    
-    for (var i = 0; i < actors.planets.length; i++){
+
+
+    for (var i = 0; i < actors.planets.length; i++) {
         if (actors.planets.length != 0) {
-            if (actors.planets[i].x < -500){
-                actors.destroyPlanet(i)   
+            if (actors.planets[i].x < -500) {
+                actors.destroyPlanet(i)
                 actors.spawnPlanet()
             }
         }
     }
 
 
-    for (var i = 0; i < actors.planets.length; i++){
+    for (var i = 0; i < actors.planets.length; i++) {
         if (actors.planets.length != 0) {
             actors.planets[i].draw()
         }
     }
 
-    for (var i = 0; i < actors.meteors.length; i++){
+    for (var i = 0; i < actors.meteors.length; i++) {
         if (actors.meteors[i].x < 50) {
             actors.destroyMeteor(i)
             actors.spawnMeteor()
             life.loseLife()
-            if (life.getLife() == 0){
+            if (life.getLife() == 0) {
                 alert("Game Over")
             }
         }
@@ -552,14 +552,14 @@ function update(){
         actors.spawnMeteor()
         score.score += 1
     }
-    
-    for (var i = 0; i < actors.meteors.length; i++){
+
+    for (var i = 0; i < actors.meteors.length; i++) {
         if (actors.meteors.length != 0) {
             actors.meteors[i].draw()
         }
     }
 
-    for (var i = 0; i < actors.lives.length; i++){
+    for (var i = 0; i < actors.lives.length; i++) {
         if (actors.lives.length != 0) {
             actors.lives[i].draw()
         }
@@ -569,7 +569,7 @@ function update(){
     score.increment()
     score.draw()
     player.draw()
-    velocity =  velocity + .0001
+    velocity = velocity + .0001
     life.draw()
     input.draw()
 
@@ -581,8 +581,5 @@ function update(){
 
 
     requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
-    
+
 }
-
-
-
