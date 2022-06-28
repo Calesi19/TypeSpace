@@ -549,7 +549,6 @@ function update() {
 
     for (var i = 0; i < actors.meteors.length; i++) {
         if (actors.meteors[i].x < 50) {
-            actors.meteors[i].drawLine(c)
             actors.destroyMeteor(i)
             actors.spawnMeteor()
             life.loseLife()
