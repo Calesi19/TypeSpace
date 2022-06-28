@@ -1,7 +1,16 @@
-
-
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.8.4/firebase-app.js'
-import { getFirestore, collection, getDocs, getDoc, doc, query, where, onSnapshot } from 'https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js'
+import {
+    initializeApp
+} from 'https://www.gstatic.com/firebasejs/9.8.4/firebase-app.js'
+import {
+    getFirestore,
+    collection,
+    getDocs,
+    getDoc,
+    doc,
+    query,
+    where,
+    onSnapshot
+} from 'https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js'
 
 
 const firebaseConfig = {
@@ -12,7 +21,7 @@ const firebaseConfig = {
     messagingSenderId: "447612983536",
     appId: "1:447612983536:web:dc3e7570c3182c129a8a35",
     measurementId: "G-T4F0T1QG2K"
-  };
+};
 
 initializeApp(firebaseConfig)
 const db = getFirestore()
@@ -27,7 +36,7 @@ var c = canvas.getContext("2d");
 var video = document.createElement("video");
 video.src = "material/spaceBackGroundMoving.mp4";
 video.muted = 'none';
-video.addEventListener('loadeddata', function() {
+video.addEventListener('loadeddata', function () {
     video.play(); // start playing
     update(); //Start rendering
 })
@@ -209,9 +218,9 @@ class Meteor {
         this.q = query(collection(db, "words"), where("id", "==", this.randomNumber));
         this.unsubscribe = onSnapshot(this.q, (querySnapshot) => {
             querySnapshot.forEach((doc) => {
-            console.log(doc.data().word);
-            this.word = doc.data().word;
-        })
+                console.log(doc.data().word);
+                this.word = doc.data().word;
+            })
         });
 
 
@@ -252,7 +261,7 @@ class Meteor {
 
     getRandomWord() {
         const words = ["HELLO", "CES", "CAR", "FRIEND", "NO", "YES", "GOODBYE"];
-        return words[Math.floor(Math.random()* words.length)];  
+        return words[Math.floor(Math.random() * words.length)];
     }
 
 }
@@ -364,7 +373,7 @@ class Actors {
 
     drawLaser(objectX, objectY) {
         // Draw a laser here from the ship to the actor being destroyed
-                
+
         // set line stroke and line width
         c.strokeStyle = 'red';
         c.lineWidth = 5;
@@ -376,7 +385,7 @@ class Actors {
         c.stroke();
     }
 
-    spawnPlanet(){
+    spawnPlanet() {
         this.planets.push(new Planet(this.choosePlanet()));
     }
 
@@ -416,8 +425,8 @@ class Input {
     }
 
     checkForInput(life) {
-        document.addEventListener('keydown', function(e) {
-            switch(e.keyCode) {
+        document.addEventListener('keydown', function (e) {
+            switch (e.keyCode) {
                 case 13: // enter
                     input.checkWord(life);
                     break;
@@ -552,7 +561,7 @@ function update() {
             actors.destroyMeteor(i)
             actors.spawnMeteor()
             life.loseLife()
-            if (life.getLife() == 0){
+            if (life.getLife() == 0) {
                 alert("Game Over - Your Score is: " + parseInt(score.getScore()))
             }
         }
@@ -580,7 +589,7 @@ function update() {
         }
     }
 
-    for (var i = 0; i < actors.lives.length; i++){
+    for (var i = 0; i < actors.lives.length; i++) {
         if (actors.lives.length != 0) {
             if (actors.lives[i].x < -100) {
                 actors.destroyLife(i)
@@ -602,7 +611,7 @@ function update() {
         lifeFrequency = 0;
     }
 
-    
+
 
     requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
 
