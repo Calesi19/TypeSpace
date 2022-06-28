@@ -1,5 +1,25 @@
 
 
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.8.4/firebase-app.js'
+import { getFirestore, collection, getDocs, getDoc, doc, query, where, onSnapshot } from 'https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js'
+
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDzkj6Fg3lVe__0qb4sy-9gNQVeRP5GXz8",
+    authDomain: "calesi-bd5a0.firebaseapp.com",
+    projectId: "calesi-bd5a0",
+    storageBucket: "calesi-bd5a0.appspot.com",
+    messagingSenderId: "447612983536",
+    appId: "1:447612983536:web:dc3e7570c3182c129a8a35",
+    measurementId: "G-T4F0T1QG2K"
+  };
+
+initializeApp(firebaseConfig)
+const db = getFirestore()
+const colRef = collection(db, 'words')
+
+
+
 var canvas = document.getElementById("canV");
 var c = canvas.getContext("2d");
 
@@ -20,12 +40,6 @@ c.fillStyle = "white";
 
 
 var velocity = 1;
-
-
-
-
-
-
 
 
 class Planet {
@@ -66,9 +80,6 @@ class Planet {
     incrementFrequency() {
         this.frequency += 1;
     }
-
-
-
 }
 
 
@@ -172,6 +183,7 @@ class Score {
 
 class Player {
     constructor() {
+        var isGoingUp = 1;
         const image = new Image()
         image.src = './material/spaceShip.png'
         image.onload = () => {
@@ -200,7 +212,17 @@ class Player {
 
 class Meteor{
     constructor() {
-        this.word = this.getRandomWord();
+        this.randomNumber = (Math.floor(Math.random() * 6300)) + 1
+        this.q = query(collection(db, "words"), where("id", "==", this.randomNumber));
+        this.unsubscribe = onSnapshot(this.q, (querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+            console.log(doc.data().word);
+            this.word = doc.data().word;
+        })
+        });
+
+
+        //this.word = this.getRandomWord();
         this.speeder = (Math.floor(Math.random() * 3)) + 1
         this.velocity = {
         x:0,
@@ -219,6 +241,7 @@ class Meteor{
     }
 
     draw(){
+
         if(this.image) { 
             this.x = this.x - (velocity * this.speeder);
             c.font = parseInt((50)) + 'px monospace';
@@ -237,8 +260,9 @@ class Meteor{
 
     getRandomWord(){
         const words = ["HELLO", "CES", "CAR", "FRIEND", "NO", "YES", "GOODBYE"];
-        return words[Math.floor(Math.random()* words.length)];
+        return words[Math.floor(Math.random()* words.length)];  
     }
+
 }
 
 class LifeBonus{
@@ -358,9 +382,6 @@ class Actors {
     destroyPlanet(index){
         this.planets.splice(index, 1);
     }
-
-
-
 }
 
 
@@ -471,7 +492,7 @@ class Input {
                 case 85: // u
                     input.addLetter('U')
                     break;
-                case 85: // v
+                case 86: // v
                     input.addLetter('V')
                     break;
                 case 87: // w
@@ -491,6 +512,8 @@ class Input {
     }
 
 }
+
+
 
 const input = new Input();
 const score = new Score()
@@ -528,11 +551,12 @@ function update(){
 
     for (var i = 0; i < actors.meteors.length; i++){
         if (actors.meteors[i].x < 50) {
+            actors.meteors[i].drawLine(c)
             actors.destroyMeteor(i)
             actors.spawnMeteor()
             life.loseLife()
             if (life.getLife() == 0){
-                alert("Game Over")
+                alert("Game Over - Your Score is: " + parseInt(score.getScore()))
             }
         }
     }
@@ -559,6 +583,14 @@ function update(){
         }
     }
 
+    for (var i = 0; i < actors.lives.length; i++){
+        if (actors.lives.length != 0) {
+            if (actors.lives[i].x < -100) {
+                actors.destroyLife(i)
+            }
+        }
+    }
+
 
     score.increment()
     score.draw()
@@ -573,6 +605,7 @@ function update(){
         lifeFrequency = 0;
     }
 
+    
 
     requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
     
