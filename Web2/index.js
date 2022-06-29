@@ -151,6 +151,9 @@ class Life {
         }
 
         image.onload = () => {
+
+            // Sets the life image's size and position.
+
             this.image = image
             this.width = image.width
             this.height = image.height
@@ -208,12 +211,19 @@ class Score {
 
 
 class Player {
+
+    // The player class holds and sets the parameters and methods necessary to draw the ship on the screen.
+
     constructor() {
-    
+
+        // Loads ship image.
 
         const image = new Image()
         image.src = './material/spaceShip.png'
         image.onload = () => {
+
+            // Sets image ship's size and position
+
             const scale = 0.25
             this.image = image
             this.width = image.width * scale
@@ -224,6 +234,8 @@ class Player {
             }
         }
     }
+
+    // This method draws the ship on the screen when called.
 
     draw() {
         if (this.image)
@@ -238,24 +250,33 @@ class Player {
 
 
 class Meteor {
+
+    /*The meteor class holds the attributes and methods necessary to 
+    spawn and draw a meteor on the screen for the player to destroy. */
+
     constructor() {
+
+        /* Since there are roughly 6300 words in the database, this variable chooses a random number
+        from 0 to 6300. */
+
         this.randomNumber = (Math.floor(Math.random() * 6300)) + 1
+
+        // A word from the database is picked whose id matches the "randomNumber" value.
+
         this.q = query(collection(db, "words"), where("id", "==", this.randomNumber));
         this.unsubscribe = onSnapshot(this.q, (querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 console.log(doc.data().word);
-                this.word = doc.data().word;
+                this.word = doc.data().word; // Word is assigned to meteor.
             })
         });
 
+        // The "speeder" variable chooses a random value, later to be used to randomize object velocity.
 
-        //this.word = this.getRandomWord();
-        
         this.speeder = (Math.floor(Math.random() * 3)) + 1
-        this.velocity = {
-            x: 0,
-            y: 0
-        }
+        
+        // Loads image and sets size and position. 
+
         const image = new Image()
         image.src = './material/Asteroid.gif'
         image.onload = () => {
@@ -268,6 +289,8 @@ class Meteor {
         }
     }
 
+    // This method draws the meteor on the screen and updates its position.
+
     draw() {
         if (this.image) {
             this.x = this.x - (velocity * this.speeder);
@@ -284,23 +307,40 @@ class Meteor {
             c.fillText(this.word, this.x, this.y + 100)
         }
     }
-
-    getRandomWord() {
-        const words = ["HELLO", "CES", "CAR", "FRIEND", "NO", "YES", "GOODBYE"];
-        return words[Math.floor(Math.random() * words.length)];
-    }
-
 }
 
+
+
+
 class LifeBonus {
+
+    /* This "LifeBonus" class handles the the attributes and methods 
+    necessary for the extra lives to spawn, move across the screen, and disappear. */
+
     constructor() {
-        this.frequency = 0
-        this.word = this.getRandomWord();
+
+        /* Since there are roughly 6300 words in the database, this variable chooses a random number
+        from 0 to 6300. */
+
+        this.randomNumber = (Math.floor(Math.random() * 6300)) + 1
+        
+        // A word from the database is picked whose id matches the "randomNumber" value.
+
+        this.q = query(collection(db, "words"), where("id", "==", this.randomNumber));
+        this.unsubscribe = onSnapshot(this.q, (querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                console.log(doc.data().word);
+                this.word = doc.data().word; // Word is assigned to meteor.
+            })
+        });
+
+
+        // The "speeder" variable chooses a random value, later to be used to randomize object velocity.
+
         this.speeder = (Math.floor(Math.random() * 3)) + 1
-        this.velocity = {
-            x: 0,
-            y: 0
-        }
+        
+        // Load image and set size and position.
+
         const image = new Image()
         image.src = './material/heart.png'
         image.onload = () => {
@@ -313,9 +353,12 @@ class LifeBonus {
         }
     }
 
+
+    // Draws the extra life on the screen and updates it position.
+
     draw() {
         if (this.image) {
-            this.x = this.x - (velocity * this.speeder);
+            this.x = this.x - (velocity * this.speeder); //Update object's position.
             c.font = parseInt((50)) + 'px monospace';
             if (typeof this.image == undefined) {
                 console.log('Hey man your image is undefined again.')
@@ -329,34 +372,52 @@ class LifeBonus {
             c.fillText(this.word, this.x, this.y + 100)
         }
     }
-
-    getRandomWord() {
-        const words = ["HELLO", "CES", "CAR", "FRIEND", "NO", "YES", "GOODBYE"];
-        return words[Math.floor(Math.random() * words.length)];
-    }
-
-    incrementFrequency() {
-        this.frequency += 1;
-    }
 }
 
 
 class Actors {
+
+    /* The actors class will keep track of the position, spawning, and destroying of
+    all the moving actors in the screen. */
+
     constructor() {
+
+        // There are five different planet images stored in a list.
+
         this.planetChoice = ['./material/planet1.png', './material/planet2.png', './material/planet3.png', './material/planet4.png', './material/planet5.png']
+        
+        // When actor's class is initialized, three meteors are spawned on the screen.
+        
         this.meteors = [new Meteor(), new Meteor(), new Meteor()];
+
+        // When actor's class is initialized, no bonus lifes are spawned on the screen.
+
         this.lives = []
+
+        // When actor's class is initialized, one planet is spawned on the screen.
+
         this.planets = [new Planet(this.choosePlanet())]
 
     }
 
+    // The following method chooses which planet image is used when a planet spawns.
+    
     choosePlanet() {
+
+        /* When list of planet is not empty, pick a random picture. Then remove
+        the picture from the list, so that it can't be picked again later on. */
+
         if (this.planetChoice.length != 0) {
             var choice = Math.floor(Math.random() * this.planetChoice.length)
             var planetAddress = this.planetChoice[choice]
             this.planetChoice.splice(choice, 1);
             return planetAddress
-        } else {
+        } 
+        
+        /* If the list of planet pictures is empty, repopulate the list and pick a random picture.
+        Then remove the picture from the list, so that it can't be picked again later on. */
+        
+        else {
             this.planetChoice = ['./material/planet1.png', './material/planet2.png', './material/planet3.png', './material/planet4.png', './material/planet5.png']
             var choice = Math.floor(Math.random() * this.planetChoice.length)
             var planetAddress = this.planetChoice[choice]
@@ -365,25 +426,37 @@ class Actors {
         }
     }
 
+    // Add a new instance of meteor to the "meteors" list. (Spawn a meteor on screen.)
+
     spawnMeteor() {
         this.meteors.push(new Meteor())
     }
+
+    // Remove instance of Meteor from the "meteors" list. (Remove meteor from screen.)
 
     destroyMeteor(index) {
         this.meteors.splice(index, 1);
     }
 
+    // Add a new instance of LifeBonus to the "lives" list. (Spawn an extra life on screen.)
+
     spawnLife() {
         this.lives.push(new LifeBonus())
     }
+
+    // Remove instance of LifeBonus from the "lives" list. (Remove extra life from screen.)
 
     destroyLife(index) {
         this.lives.splice(index, 1);
     }
 
-    
+    /* This method checks if word typed by user matches word assigned to
+    a meteor or extra life. */
+
     checkActorMatch(targetWord, life) {
+
         /* Checks to see if targetWord matches with any of the meteors or lives, if so it deletes it and spawns another */
+
         for (let i = 0; i < this.meteors.length; i++) {
             if (this.meteors[i].word == targetWord) {
                 this.drawLaser(this.meteors[i].x, this.meteors[i].y)
@@ -419,9 +492,13 @@ class Actors {
         c.stroke();
     }
 
+    // Add a new instance of Planet to the "planets" list. (Spawn a planet on screen.)
+
     spawnPlanet() {
         this.planets.push(new Planet(this.choosePlanet()));
     }
+
+    // Remove instance of Planet from the "planets" list. (Remove planet from screen.)
 
     destroyPlanet(index) {
         this.planets.splice(index, 1);
@@ -430,23 +507,34 @@ class Actors {
 
 
 class Input {
+
+    //The "Input" class listens and tracks what the user has typed.
+
     constructor() {
+
+        // "targetWord" holds the letters of the word the user is currently typing.
+
         this.targetWord = []
     }
 
     // Adds a letter to the targetWord
+
     addLetter(character) {
         this.targetWord.push(character)
     }
 
     // Deletes a letter from the targetWord
+
     deleteLetter() {
         this.targetWord.pop()
     }
 
     // Converts the list targetWord into a string and then calls checkActorMatch to possibly delete actors
+
     checkWord(life) {
+
         // basically check to see if this word is in any of the meteors, delete the meteors that it matches
+
         let current_word = '';
         for (let character in this.targetWord) {
             current_word = current_word + this.targetWord[character];
@@ -456,12 +544,14 @@ class Input {
     }
 
     // Display current targetWord
+
     draw() {
         c.font = +parseInt((50)) + 'px monospace';
         c.fillText(this.targetWord.join(""), 15, 1000)
     }
 
     // Event listener, handle input, deal with letters, backspace, and enter/spacebar
+
     checkForInput(life) {
         document.addEventListener('keydown', function (e) {
             switch (e.keyCode) {
@@ -559,14 +649,26 @@ class Input {
 }
 
 
-
+// Initialize input class.
 const input = new Input();
+
+// Initialize score class.
 const score = new Score()
+
+// Initialize Player class.
 const player = new Player()
+
+// Initialize class for moving actors.
 const actors = new Actors();
+
+//Initialize life class.
 const life = new Life();
+
+//Start keyboard key listeners
 input.checkForInput(life)
 
+/* Initialize "lifeFrequency" variable at value 0.
+The "lifeFrequency" variable holds a value that determines whether or not a bonus life spawns.*/
 var lifeFrequency = 0;
 
 
@@ -612,8 +714,6 @@ function update() {
             }
         }
     }
-
-
 
     // Every time the player gaines 100 points, add a new meteor into the loop.
 
@@ -673,8 +773,7 @@ function update() {
 
     input.draw()
 
-    /* The "lifeFrequency" variable holds a value that determines whether or not a bonus life spawns.
-    Increase "lifeFrequency" increments by 1 each frame. */
+    /* Increase "lifeFrequency" increments by 1 each frame. */
 
     lifeFrequency += 1;
 
