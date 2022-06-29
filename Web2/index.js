@@ -381,7 +381,9 @@ class Actors {
         this.lives.splice(index, 1);
     }
 
+    
     checkActorMatch(targetWord, life) {
+        /* Checks to see if targetWord matches with any of the meteors or lives, if so it deletes it and spawns another */
         for (let i = 0; i < this.meteors.length; i++) {
             if (this.meteors[i].word == targetWord) {
                 this.drawLaser(this.meteors[i].x, this.meteors[i].y)
@@ -398,16 +400,22 @@ class Actors {
     }
 
     drawLaser(objectX, objectY) {
-        // Draw a laser here from the ship to the actor being destroyed
+        /* Draw a laser from the ship to the actor being destroyed, pass in coordinates of target object */
+
+        // Current problem is that it's being cleared too quickly
+        console.log('pew pew')
+                
 
         // set line stroke and line width
         c.strokeStyle = 'red';
-        c.lineWidth = 5;
+        c.lineWidth = 50;
 
         // draw a red line
         c.beginPath();
-        c.moveTo(50, (canvas.height / 2) - (this.height) + 50);
-        c.lineTo(objectX, objectY);
+        // c.moveTo(50, (canvas.height / 2) - (this.height) + 50);
+        // c.lineTo(objectX, objectY);
+        c.moveTo(100,100)
+        c.lineTo(1000,1000)
         c.stroke();
     }
 
@@ -421,20 +429,22 @@ class Actors {
 }
 
 
-
-
 class Input {
     constructor() {
         this.targetWord = []
     }
 
+    // Adds a letter to the targetWord
     addLetter(character) {
         this.targetWord.push(character)
     }
 
+    // Deletes a letter from the targetWord
     deleteLetter() {
         this.targetWord.pop()
     }
+
+    // Converts the list targetWord into a string and then calls checkActorMatch to possibly delete actors
     checkWord(life) {
         // basically check to see if this word is in any of the meteors, delete the meteors that it matches
         let current_word = '';
@@ -445,11 +455,13 @@ class Input {
         actors.checkActorMatch(current_word, life);
     }
 
+    // Display current targetWord
     draw() {
         c.font = +parseInt((50)) + 'px monospace';
         c.fillText(this.targetWord.join(""), 15, 1000)
     }
 
+    // Event listener, handle input, deal with letters, backspace, and enter/spacebar
     checkForInput(life) {
         document.addEventListener('keydown', function (e) {
             switch (e.keyCode) {
