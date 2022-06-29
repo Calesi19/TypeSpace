@@ -1,17 +1,18 @@
+
+// Import modules used to connect to Firestore/Firebase Database
+
 import {
     initializeApp
 } from 'https://www.gstatic.com/firebasejs/9.8.4/firebase-app.js'
 import {
     getFirestore,
     collection,
-    getDocs,
-    getDoc,
-    doc,
     query,
     where,
     onSnapshot
 } from 'https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js'
 
+// Database connection credentials and addresses
 
 const firebaseConfig = {
     apiKey: "AIzaSyDzkj6Fg3lVe__0qb4sy-9gNQVeRP5GXz8",
@@ -23,40 +24,53 @@ const firebaseConfig = {
     measurementId: "G-T4F0T1QG2K"
 };
 
+// Establish connection credentials
+
 initializeApp(firebaseConfig)
 const db = getFirestore()
-const colRef = collection(db, 'words')
 
 
+// Retreives canvas element from HTML
 
 var canvas = document.getElementById("canV");
 var c = canvas.getContext("2d");
 
+// Loads background video into HTML
 
 var video = document.createElement("video");
 video.src = "material/spaceBackGroundMoving.mp4";
-video.muted = 'none';
+video.muted = true;
 video.addEventListener('loadeddata', function () {
     video.play(); // start playing
     update(); //Start rendering
 })
 
+// Sets canvas dimensions
+
 canvas.width = 1920 //window.innerWidth
 canvas.height = 1080 //window.innerHeight
+
+
+// Specifies canvas' font attributes.
 
 c.textAlign = "left";
 c.fillStyle = "white";
 
+// Standard velocity.
 
 var velocity = 1;
 
 
 class Planet {
+
+    // This class for the planets spawning in the background of the game.
+
     constructor(planetChoice) {
-        this.frequency = 0
-        this.word = this.getRandomWord();
-        this.speeder = (Math.floor(Math.random() * 3)) + 1
-        this.velocity = .25
+
+        this.velocity = .25  // Standard velocity.
+
+        //load image
+
         const image = new Image()
         image.src = planetChoice
         image.onload = () => {
@@ -68,10 +82,11 @@ class Planet {
         }
     }
 
+    //Draw image on screen.
 
     draw() {
         if (this.image) {
-            this.x = this.x - this.velocity;
+            this.x = this.x - this.velocity; // Update objects position.
             c.drawImage(
                 this.image,
                 this.x,
@@ -80,42 +95,48 @@ class Planet {
                 this.height)
         }
     }
-
-    getRandomWord() {
-        const words = ["HELLO", "CES", "CAR", "FRIEND", "NO", "YES", "GOODBYE"];
-        return words[Math.floor(Math.random() * words.length)];
-    }
-
-    incrementFrequency() {
-        this.frequency += 1;
-    }
 }
 
 
 
 class Life {
+
+    /* This class keeps track of the player's life, draws the player's life
+    on the screen, and handles adding and removing life points.*/
+
     constructor() {
-        this.life = 3
+
+        this.life = 3      
         this.image;
         this.loadImage()
 
     }
 
+    // This method substracts a life point from the players current life.
+
     loseLife() {
         this.life -= 1
     }
+
+    // This method adds a life point to the players current life.
 
     addLife() {
         if (this.life != 5)
             this.life += 1
     }
 
+    // This method returns the amount of life points the player currently has.
+
     getLife() {
         return this.life;
     }
 
+    // This medthod loads the picture representing the amount of life points the player currently has.
+
     loadImage() {
         const image = new Image()
+
+        // Each of these image addresses loads a picture representing different heart (life points) quantities.
 
         if (this.life == 1) {
             image.src = './material/life1.png'
@@ -140,6 +161,8 @@ class Life {
         }
     }
 
+    // This medthod draws on the screen how many life points the player currently has.
+
     draw() {
 
         this.loadImage()
@@ -156,25 +179,26 @@ class Life {
 
 
 class Score {
+
+    // The score class keeps track of the student's current score points, draws the scores on the screen, and increments the score each frame.
+
     constructor() {
-        this.score = 1;
+        this.score = 1; // Player's score value
     }
+
+    //This method returns the player's current score.
 
     getScore() {
         return this.score;
     }
 
-    setScore(score) {
-        this.score = score;
-    }
-
-    addScore(score) {
-        this.score += score;
-    }
+    // This method increments the player score by .75 when called.
 
     increment() {
         this.score += .075
     }
+
+    // This method displays the player's current score on the screen.
 
     draw() {
         c.font = +parseInt((50)) + 'px monospace';
@@ -185,7 +209,8 @@ class Score {
 
 class Player {
     constructor() {
-        var isGoingUp = 1;
+    
+
         const image = new Image()
         image.src = './material/spaceShip.png'
         image.onload = () => {
@@ -225,6 +250,7 @@ class Meteor {
 
 
         //this.word = this.getRandomWord();
+        
         this.speeder = (Math.floor(Math.random() * 3)) + 1
         this.velocity = {
             x: 0,
