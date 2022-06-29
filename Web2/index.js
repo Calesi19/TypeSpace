@@ -559,12 +559,17 @@ var lifeFrequency = 0;
 
 
 function update() {
+    
+
+    // Clears the screen from all elements.
 
     c.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draws next frame of background video.
+
     c.drawImage(video, 0, 0, 1920, 1080);
 
-
-
+    // Checks if it needs to destroy and spawn a planet.
 
     for (var i = 0; i < actors.planets.length; i++) {
         if (actors.planets.length != 0) {
@@ -575,33 +580,38 @@ function update() {
         }
     }
 
-
+    // Draws the planet on the screen (and updates its position).
+    
     for (var i = 0; i < actors.planets.length; i++) {
         if (actors.planets.length != 0) {
             actors.planets[i].draw()
         }
     }
 
+    // Checks if meteors have reached ship.
+
     for (var i = 0; i < actors.meteors.length; i++) {
         if (actors.meteors[i].x < 50) {
-            actors.destroyMeteor(i)
-            actors.spawnMeteor()
-            life.loseLife()
+            actors.destroyMeteor(i)    // Destroy meteors if it reaches ship.
+            actors.spawnMeteor()       // Spawn new meteor.
+            life.loseLife()            // Lose life.
             if (life.getLife() == 0) {
-                alert("Game Over - Your Score is: " + parseInt(score.getScore()))
+                alert("Game Over - Your Score is: " + parseInt(score.getScore()))    //If life reaches 0, end game.
             }
         }
     }
 
-    if (Math.floor(score.getScore()) % 100 == 0) {
+
+
+    // Every time the player gaines 100 points, add a new meteor into the loop.
+
+    if (Math.floor(score.getScore()) % 100 == 0) {       
         actors.spawnMeteor()
-        score.score += 1
+        score.score += 1 //Add one to make sure score isn't 100 by next frame.
     }
 
-    if (Math.floor(score.getScore()) % 100 == 0) {
-        actors.spawnMeteor()
-        score.score += 1
-    }
+
+    // Draw each meteor on the screen (and update their position).
 
     for (var i = 0; i < actors.meteors.length; i++) {
         if (actors.meteors.length != 0) {
@@ -609,11 +619,15 @@ function update() {
         }
     }
 
+    // Draw any bonus lives that have spawned.
+
     for (var i = 0; i < actors.lives.length; i++) {
         if (actors.lives.length != 0) {
             actors.lives[i].draw()
         }
     }
+
+    //Checks if bonus life has reached past the ship; if so, destroy the life.
 
     for (var i = 0; i < actors.lives.length; i++) {
         if (actors.lives.length != 0) {
@@ -623,21 +637,43 @@ function update() {
         }
     }
 
+    // Increment the player's score in each frame.
 
     score.increment()
+
+    // Display the player's current score on the screen.
+
     score.draw()
+
+    // Draw the player ship on the screen.
+
     player.draw()
+
+    // Each frame, increase the standard velocity by a small increment.
+
     velocity = velocity + .0001
+
+    // Display the player's current health.
+
     life.draw()
+
+    // Display the letters the user has currently typed.
+
     input.draw()
 
+    /* The "lifeFrequency" variable holds a value that determines whether or not a bonus life spawns.
+    Increase "lifeFrequency" increments by 1 each frame. */
+
     lifeFrequency += 1;
+
+    // When "lifeFrequency" reaches 1000, span a bonus life, and reset the "lifeFrequency" value to 0. 
+
     if (lifeFrequency == 1000) {
         actors.spawnLife()
         lifeFrequency = 0;
     }
 
-
+    // Runs the game loop
 
     requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
 
