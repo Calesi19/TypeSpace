@@ -66,6 +66,9 @@ class Explosion {
 
     constructor(xPosition, yPosition) {
         
+        this.x = xPosition
+        this.y = yPosition
+
         this.width = 300
         this.height = 300
 
@@ -73,16 +76,53 @@ class Explosion {
         this.spriteSelection = 0
         // Loads image and sets size and position. 
 
-        this.sprites = ['./material/explosion/1.png','./material/explosion/2.png','./material/explosion/3.png','./material/explosion/3.png','./material/explosion/4.png','./material/explosion/5.png','./material/explosion/6.png','./material/explosion/6.png','./material/explosion/7.png']
+        this.sprites = [
+            './material/explosion/1.png',
+            './material/explosion/2.png',
+            './material/explosion/3.png',
+            './material/explosion/3.png',
+            './material/explosion/4.png',
+            './material/explosion/5.png',
+            './material/explosion/6.png',
+            './material/explosion/6.png',
+            './material/explosion/7.png',
+            './material/explosion/8.png',
+            './material/explosion/9.png',
+            './material/explosion/10.png',
+            './material/explosion/11.png',
+            './material/explosion/12.png',
+            './material/explosion/13.png',
+            './material/explosion/14.png',
+            './material/explosion/15.png',
+            './material/explosion/16.png',
+            './material/explosion/17.png',
+            './material/explosion/18.png',
+            './material/explosion/19.png',
+            './material/explosion/20.png',
+            './material/explosion/21.png',
+            './material/explosion/22.png',
+            './material/explosion/23.png',
+            './material/explosion/24.png',
+            './material/explosion/25.png',
+            './material/explosion/26.png',
+            './material/explosion/27.png',
+            './material/explosion/28.png',
+            './material/explosion/29.png',
+            './material/explosion/30.png',
+            './material/explosion/31.png',
+            './material/explosion/32.png',
+            './material/explosion/33.png']
     }
 
     loadImage(){
         
         
         
-        if (this.frameCounter == 6){
+        if (this.frameCounter == 2){
             this.spriteSelection += 1
         }
+
+        
 
         const image = new Image()
         image.src = this.sprites[this.spriteSelection]
@@ -91,8 +131,8 @@ class Explosion {
             this.image = image
             this.width = this.width
             this.height = this.width
-            this.x = 500
-            this.y = 500
+            this.x = this.x - 1
+            this.y = this.y
         }
     }
 
@@ -105,7 +145,8 @@ class Explosion {
 
 
         if (this.image) {
-            this.x = this.x - (velocity * this.speeder);
+            
+            //this.x = this.x - (velocity * this.speeder);
             
             if (typeof this.image == undefined) {
                 console.log('Hey man your image is undefined again.')
@@ -121,7 +162,7 @@ class Explosion {
     }
 
     increment_frame_counter(){
-        if (this.frameCounter == 6) {
+        if (this.frameCounter == 2) {
             this.frameCounter = 0
             this.spriteSelection += 1
         }
@@ -190,8 +231,9 @@ class Life {
 
     // This method substracts a life point from the players current life.
 
-    loseLife() {
+    loseLife(player) {
         this.life -= 1
+        player.frameCounter = -15
     }
 
     // This method adds a life point to the players current life.
@@ -199,6 +241,7 @@ class Life {
     addLife() {
         if (this.life != 5)
             this.life += 1
+        player.frameCounter = 15
     }
 
     // This method returns the amount of life points the player currently has.
@@ -291,19 +334,38 @@ class Player {
     // The player class holds and sets the parameters and methods necessary to draw the ship on the screen.
 
     constructor() {
+        
+        this.frameCounter = 0
 
+    }
+
+
+    loadImage(){
         // Loads ship image.
 
+
         const image = new Image()
-        image.src = './material/spaceShip.png'
+
+        if (this.frameCounter == 0) {
+            image.src = './material/spaceShip.png'
+        }
+        if (this.frameCounter > 0){
+            image.src = './material/spaceShipHealed.png'
+            this.frameCounter -= 1
+        }
+        if (this.frameCounter < 0){
+            image.src = './material/spaceShipHurt.png'
+            this.frameCounter += 1
+        }
+
         image.onload = () => {
 
             // Sets image ship's size and position
 
             const scale = 0.25
             this.image = image
-            this.width = image.width * scale
-            this.height = image.height * scale
+            this.width = 1280 * scale
+            this.height = 720 * scale
             this.position = {
                 x: 50,
                 y: (canvas.height / 2) - (this.height) + 50
@@ -314,6 +376,7 @@ class Player {
     // This method draws the ship on the screen when called.
 
     draw() {
+        this.loadImage()
         if (this.image)
             c.drawImage(
                 this.image,
@@ -480,7 +543,7 @@ class Actors {
         this.planets = [new Planet(this.choosePlanet())];
 
 
-        this.explosions = [];
+        this.explosions = [new Explosion(500, 500)];
 
     }
 
@@ -519,11 +582,12 @@ class Actors {
     // Remove instance of Meteor from the "meteors" list. (Remove meteor from screen.)
 
     destroyMeteor(index) {
-        let xPosition = this.meteors[index].x
-        let yPosition = this.meteors[index].y
-        this.meteors.splice(index, 1);
+        var xPosition = this.meteors[index].x
+        var yPosition = this.meteors[index].y
+        var audio = new Audio('./material/explosion/explosion.wav');
+        audio.play();
         this.addExplosion(xPosition, yPosition)
-
+        this.meteors.splice(index, 1);
     }
 
     // Add a new instance of LifeBonus to the "lives" list. (Spawn an extra life on screen.)
@@ -802,7 +866,7 @@ function update() {
         if (actors.meteors[i].x < 50) {
             actors.destroyMeteor(i)    // Destroy meteors if it reaches ship.
             actors.spawnMeteor()       // Spawn new meteor.
-            life.loseLife()            // Lose life.
+            life.loseLife(player)            // Lose life.
             if (life.getLife() == 0) {
                 alert("Game Over - Your Score is: " + parseInt(score.getScore()))    //If life reaches 0, end game.
             }
@@ -841,7 +905,7 @@ function update() {
 
     for (var i = 0; i < actors.explosions.length; i++) {
         if (actors.explosions.length != 0) {
-            if (actors.explosions[i].spriteSelection == 5){
+            if (actors.explosions[i].spriteSelection == 32){
                 actors.explosions.splice(i, 1)
             }
         }
