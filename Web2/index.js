@@ -61,6 +61,123 @@ c.fillStyle = "white";
 var velocity = 1;
 
 
+
+class Explosion {
+
+    constructor(xPosition, yPosition) {
+        
+        this.x = xPosition
+        this.y = yPosition
+
+        this.width = 300
+        this.height = 300
+
+        this.frameCounter = 0
+        this.spriteSelection = 0
+        // Loads image and sets size and position. 
+
+        this.sprites = [
+            './material/explosion/1.png',
+            './material/explosion/2.png',
+            './material/explosion/3.png',
+            './material/explosion/3.png',
+            './material/explosion/4.png',
+            './material/explosion/5.png',
+            './material/explosion/6.png',
+            './material/explosion/6.png',
+            './material/explosion/7.png',
+            './material/explosion/8.png',
+            './material/explosion/9.png',
+            './material/explosion/10.png',
+            './material/explosion/11.png',
+            './material/explosion/12.png',
+            './material/explosion/13.png',
+            './material/explosion/14.png',
+            './material/explosion/15.png',
+            './material/explosion/16.png',
+            './material/explosion/17.png',
+            './material/explosion/18.png',
+            './material/explosion/19.png',
+            './material/explosion/20.png',
+            './material/explosion/21.png',
+            './material/explosion/22.png',
+            './material/explosion/23.png',
+            './material/explosion/24.png',
+            './material/explosion/25.png',
+            './material/explosion/26.png',
+            './material/explosion/27.png',
+            './material/explosion/28.png',
+            './material/explosion/29.png',
+            './material/explosion/30.png',
+            './material/explosion/31.png',
+            './material/explosion/32.png',
+            './material/explosion/33.png']
+    }
+
+    loadImage(){
+        
+        
+        
+        if (this.frameCounter == 2){
+            this.spriteSelection += 1
+        }
+
+        
+
+        const image = new Image()
+        image.src = this.sprites[this.spriteSelection]
+        image.onload = () => {
+            const scale = 0.1 + (Math.random() / 4)
+            this.image = image
+            this.width = this.width
+            this.height = this.width
+            this.x = this.x - 1
+            this.y = this.y
+        }
+    }
+
+
+    // This method draws the meteor on the screen and updates its position.
+
+    draw() {
+
+        this.loadImage()
+
+
+        if (this.image) {
+            
+            //this.x = this.x - (velocity * this.speeder);
+            
+            if (typeof this.image == undefined) {
+                console.log('Hey man your image is undefined again.')
+            }
+            c.drawImage(
+                this.image,
+                this.x,
+                this.y,
+                this.width,
+                this.height)
+           
+        }
+    }
+
+    increment_frame_counter(){
+        if (this.frameCounter == 2) {
+            this.frameCounter = 0
+            this.spriteSelection += 1
+        }
+        else {
+            this.frameCounter += 1
+        }
+    }
+
+
+
+}
+
+
+
+
 class Planet {
 
     // This class for the planets spawning in the background of the game.
@@ -114,8 +231,9 @@ class Life {
 
     // This method substracts a life point from the players current life.
 
-    loseLife() {
+    loseLife(player) {
         this.life -= 1
+        player.frameCounter = -15
     }
 
     // This method adds a life point to the players current life.
@@ -123,6 +241,7 @@ class Life {
     addLife() {
         if (this.life != 5)
             this.life += 1
+        player.frameCounter = 15
     }
 
     // This method returns the amount of life points the player currently has.
@@ -215,19 +334,38 @@ class Player {
     // The player class holds and sets the parameters and methods necessary to draw the ship on the screen.
 
     constructor() {
+        
+        this.frameCounter = 0
 
+    }
+
+
+    loadImage(){
         // Loads ship image.
 
+
         const image = new Image()
-        image.src = './material/spaceShip.png'
+
+        if (this.frameCounter == 0) {
+            image.src = './material/spaceShip.png'
+        }
+        if (this.frameCounter > 0){
+            image.src = './material/spaceShipHealed.png'
+            this.frameCounter -= 1
+        }
+        if (this.frameCounter < 0){
+            image.src = './material/spaceShipHurt.png'
+            this.frameCounter += 1
+        }
+
         image.onload = () => {
 
             // Sets image ship's size and position
 
             const scale = 0.25
             this.image = image
-            this.width = image.width * scale
-            this.height = image.height * scale
+            this.width = 1280 * scale
+            this.height = 720 * scale
             this.position = {
                 x: 50,
                 y: (canvas.height / 2) - (this.height) + 50
@@ -238,6 +376,7 @@ class Player {
     // This method draws the ship on the screen when called.
 
     draw() {
+        this.loadImage()
         if (this.image)
             c.drawImage(
                 this.image,
@@ -307,6 +446,11 @@ class Meteor {
             c.fillText(this.word, this.x, this.y + 100)
         }
     }
+
+    getPosition(){
+        return [this.x, this.y];
+    }
+
 }
 
 
@@ -384,7 +528,7 @@ class Actors {
 
         // There are five different planet images stored in a list.
 
-        this.planetChoice = ['./material/planet1.png', './material/planet2.png', './material/planet3.png', './material/planet4.png', './material/planet5.png']
+        this.planetChoice = ['./material/planet1.png', './material/planet2.png', './material/planet3.png', './material/planet4.png', './material/planet5.png'];
         
         // When actor's class is initialized, three meteors are spawned on the screen.
         
@@ -392,11 +536,14 @@ class Actors {
 
         // When actor's class is initialized, no bonus lifes are spawned on the screen.
 
-        this.lives = []
+        this.lives = [];
 
         // When actor's class is initialized, one planet is spawned on the screen.
 
-        this.planets = [new Planet(this.choosePlanet())]
+        this.planets = [new Planet(this.choosePlanet())];
+
+
+        this.explosions = [new Explosion(500, 500)];
 
     }
 
@@ -435,6 +582,11 @@ class Actors {
     // Remove instance of Meteor from the "meteors" list. (Remove meteor from screen.)
 
     destroyMeteor(index) {
+        var xPosition = this.meteors[index].x
+        var yPosition = this.meteors[index].y
+        var audio = new Audio('./material/explosion/explosion.wav');
+        audio.play();
+        this.addExplosion(xPosition, yPosition)
         this.meteors.splice(index, 1);
     }
 
@@ -503,6 +655,12 @@ class Actors {
     destroyPlanet(index) {
         this.planets.splice(index, 1);
     }
+
+    addExplosion(xPosition, yPosition){
+        this.explosions.push(new Explosion(xPosition, yPosition))
+    }
+
+
 }
 
 
@@ -708,7 +866,7 @@ function update() {
         if (actors.meteors[i].x < 50) {
             actors.destroyMeteor(i)    // Destroy meteors if it reaches ship.
             actors.spawnMeteor()       // Spawn new meteor.
-            life.loseLife()            // Lose life.
+            life.loseLife(player)            // Lose life.
             if (life.getLife() == 0) {
                 alert("Game Over - Your Score is: " + parseInt(score.getScore()))    //If life reaches 0, end game.
             }
@@ -730,6 +888,30 @@ function update() {
             actors.meteors[i].draw()
         }
     }
+
+    
+    for (var i = 0; i < actors.explosions.length; i++) {
+        if (actors.explosions.length != 0) {
+            actors.explosions[i].draw()
+        }
+    }
+
+
+    for (var i = 0; i < actors.explosions.length; i++) {
+        if (actors.explosions.length != 0) {
+            actors.explosions[i].increment_frame_counter()
+        }
+    }
+
+    for (var i = 0; i < actors.explosions.length; i++) {
+        if (actors.explosions.length != 0) {
+            if (actors.explosions[i].spriteSelection == 32){
+                actors.explosions.splice(i, 1)
+            }
+        }
+    }
+
+
 
     // Draw any bonus lives that have spawned.
 
@@ -789,3 +971,12 @@ function update() {
     requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
 
 }
+
+
+
+
+
+
+
+
+
