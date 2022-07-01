@@ -30,6 +30,13 @@ initializeApp(firebaseConfig)
 const db = getFirestore()
 
 
+
+const music = new Audio('./material/spaceRace.mp3');
+music.loop = true;
+music.play()
+
+
+
 // Retreives canvas element from HTML
 
 var canvas = document.getElementById("canV");
@@ -543,7 +550,7 @@ class Actors {
         this.planets = [new Planet(this.choosePlanet())];
 
 
-        this.explosions = [new Explosion(500, 500)];
+        this.explosions = [];
 
     }
 
