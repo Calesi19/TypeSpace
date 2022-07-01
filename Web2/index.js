@@ -61,6 +61,82 @@ c.fillStyle = "white";
 var velocity = 1;
 
 
+
+class Explosion {
+
+    constructor(xPosition, yPosition) {
+        
+        this.width = 300
+        this.height = 300
+
+        this.frameCounter = 0
+        this.spriteSelection = 0
+        // Loads image and sets size and position. 
+
+        this.sprites = ['./material/explosion/1.png','./material/explosion/2.png','./material/explosion/3.png','./material/explosion/3.png','./material/explosion/4.png','./material/explosion/5.png','./material/explosion/6.png','./material/explosion/6.png','./material/explosion/7.png']
+    }
+
+    loadImage(){
+        
+        
+        
+        if (this.frameCounter == 6){
+            this.spriteSelection += 1
+        }
+
+        const image = new Image()
+        image.src = this.sprites[this.spriteSelection]
+        image.onload = () => {
+            const scale = 0.1 + (Math.random() / 4)
+            this.image = image
+            this.width = this.width
+            this.height = this.width
+            this.x = 500
+            this.y = 500
+        }
+    }
+
+
+    // This method draws the meteor on the screen and updates its position.
+
+    draw() {
+
+        this.loadImage()
+
+
+        if (this.image) {
+            this.x = this.x - (velocity * this.speeder);
+            
+            if (typeof this.image == undefined) {
+                console.log('Hey man your image is undefined again.')
+            }
+            c.drawImage(
+                this.image,
+                this.x,
+                this.y,
+                this.width,
+                this.height)
+           
+        }
+    }
+
+    increment_frame_counter(){
+        if (this.frameCounter == 6) {
+            this.frameCounter = 0
+            this.spriteSelection += 1
+        }
+        else {
+            this.frameCounter += 1
+        }
+    }
+
+
+
+}
+
+
+
+
 class Planet {
 
     // This class for the planets spawning in the background of the game.
@@ -307,6 +383,11 @@ class Meteor {
             c.fillText(this.word, this.x, this.y + 100)
         }
     }
+
+    getPosition(){
+        return [this.x, this.y];
+    }
+
 }
 
 
@@ -384,7 +465,7 @@ class Actors {
 
         // There are five different planet images stored in a list.
 
-        this.planetChoice = ['./material/planet1.png', './material/planet2.png', './material/planet3.png', './material/planet4.png', './material/planet5.png']
+        this.planetChoice = ['./material/planet1.png', './material/planet2.png', './material/planet3.png', './material/planet4.png', './material/planet5.png'];
         
         // When actor's class is initialized, three meteors are spawned on the screen.
         
@@ -392,11 +473,14 @@ class Actors {
 
         // When actor's class is initialized, no bonus lifes are spawned on the screen.
 
-        this.lives = []
+        this.lives = [];
 
         // When actor's class is initialized, one planet is spawned on the screen.
 
-        this.planets = [new Planet(this.choosePlanet())]
+        this.planets = [new Planet(this.choosePlanet())];
+
+
+        this.explosions = [];
 
     }
 
@@ -435,7 +519,11 @@ class Actors {
     // Remove instance of Meteor from the "meteors" list. (Remove meteor from screen.)
 
     destroyMeteor(index) {
+        let xPosition = this.meteors[index].x
+        let yPosition = this.meteors[index].y
         this.meteors.splice(index, 1);
+        this.addExplosion(xPosition, yPosition)
+
     }
 
     // Add a new instance of LifeBonus to the "lives" list. (Spawn an extra life on screen.)
@@ -503,6 +591,12 @@ class Actors {
     destroyPlanet(index) {
         this.planets.splice(index, 1);
     }
+
+    addExplosion(xPosition, yPosition){
+        this.explosions.push(new Explosion(xPosition, yPosition))
+    }
+
+
 }
 
 
@@ -731,6 +825,30 @@ function update() {
         }
     }
 
+    
+    for (var i = 0; i < actors.explosions.length; i++) {
+        if (actors.explosions.length != 0) {
+            actors.explosions[i].draw()
+        }
+    }
+
+
+    for (var i = 0; i < actors.explosions.length; i++) {
+        if (actors.explosions.length != 0) {
+            actors.explosions[i].increment_frame_counter()
+        }
+    }
+
+    for (var i = 0; i < actors.explosions.length; i++) {
+        if (actors.explosions.length != 0) {
+            if (actors.explosions[i].spriteSelection == 5){
+                actors.explosions.splice(i, 1)
+            }
+        }
+    }
+
+
+
     // Draw any bonus lives that have spawned.
 
     for (var i = 0; i < actors.lives.length; i++) {
@@ -789,3 +907,12 @@ function update() {
     requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
 
 }
+
+
+
+
+
+
+
+
+
