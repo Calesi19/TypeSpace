@@ -412,7 +412,7 @@ class Meteor {
         this.q = query(collection(db, "words"), where("id", "==", this.randomNumber));
         this.unsubscribe = onSnapshot(this.q, (querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                console.log(doc.data().word);
+                // console.log(doc.data().word);
                 this.word = doc.data().word; // Word is assigned to meteor.
             })
         });
@@ -480,7 +480,7 @@ class LifeBonus {
         this.q = query(collection(db, "words"), where("id", "==", this.randomNumber));
         this.unsubscribe = onSnapshot(this.q, (querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                console.log(doc.data().word);
+                // console.log(doc.data().word);
                 this.word = doc.data().word; // Word is assigned to meteor.
             })
         });
