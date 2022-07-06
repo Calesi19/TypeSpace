@@ -525,6 +525,31 @@ class LifeBonus {
     }
 }
 
+class Laser {
+    constructor(objectX, objectY) {
+
+        this.x = objectX + 100;
+        this.y = objectY + 100;
+        this.counter = 5;
+    }
+
+
+    // Draws the extra life on the screen and updates it position.
+
+    draw() {
+        c.strokeStyle = 'red';
+        c.lineWidth = 25;
+
+        // draw a red line
+        c.beginPath();
+        // c.moveTo(50, (canvas.height / 2) - (this.height) + 50);
+        // c.lineTo(objectX, objectY);
+        c.moveTo(300, canvas.height/2 - 40)
+        c.lineTo(this.x, this.y)
+        c.stroke();
+    }
+}
+
 
 class Actors {
 
@@ -549,7 +574,9 @@ class Actors {
 
         this.planets = [new Planet(this.choosePlanet())];
 
+        // When actor's class is initialized, initialize lists of lasers and explosions
 
+        this.lasers = [];
         this.explosions = [];
 
     }
@@ -618,7 +645,7 @@ class Actors {
 
         for (let i = 0; i < this.meteors.length; i++) {
             if (this.meteors[i].word == targetWord) {
-                this.drawLaser(this.meteors[i].x, this.meteors[i].y)
+                this.lasers.push(new Laser(this.meteors[i].x, this.meteors[i].y))
                 this.destroyMeteor(i)
                 this.spawnMeteor()
             }
@@ -629,26 +656,6 @@ class Actors {
                 life.addLife();
             }
         }
-    }
-
-    drawLaser(objectX, objectY) {
-        /* Draw a laser from the ship to the actor being destroyed, pass in coordinates of target object */
-
-        // Current problem is that it's being cleared too quickly
-        console.log('pew pew')
-                
-
-        // set line stroke and line width
-        c.strokeStyle = 'red';
-        c.lineWidth = 50;
-
-        // draw a red line
-        c.beginPath();
-        // c.moveTo(50, (canvas.height / 2) - (this.height) + 50);
-        // c.lineTo(objectX, objectY);
-        c.moveTo(100,100)
-        c.lineTo(1000,1000)
-        c.stroke();
     }
 
     // Add a new instance of Planet to the "planets" list. (Spawn a planet on screen.)
@@ -829,6 +836,8 @@ const actors = new Actors();
 //Initialize life class.
 const life = new Life();
 
+const laser = new Laser();
+
 //Start keyboard key listeners
 input.checkForInput(life)
 
@@ -864,6 +873,25 @@ function update() {
     for (var i = 0; i < actors.planets.length; i++) {
         if (actors.planets.length != 0) {
             actors.planets[i].draw()
+        }
+    }
+
+    // Draws all lasers on the screen
+    for (var i = 0; i < actors.lasers.length; i++) {
+        if (actors.lasers.length != 0) {
+            actors.lasers[i].draw();
+            console.log('calling draw()');
+        }
+    }
+
+    // Removes any lasers that need to be removed, otherwise ticks their counter down one
+    for (var i = 0; i < actors.lasers.length; i++) {
+        if (actors.lasers.length != 0) {
+            if (actors.lasers[i].counter < 0) {
+                actors.lasers.splice(i); // check to see if this works, haven't tested it yet
+            } else {
+                actors.lasers[i].counter -= 1;
+            }
         }
     }
 
@@ -938,6 +966,8 @@ function update() {
         }
     }
 
+    
+
     // Increment the player's score in each frame.
 
     score.increment()
@@ -978,12 +1008,3 @@ function update() {
     requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
 
 }
-
-
-
-
-
-
-
-
-
