@@ -8,7 +8,9 @@ import {
     collection,
     query,
     where,
-    onSnapshot
+    onSnapshot,
+    doc,
+    setDoc,
 } from 'https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js'
 
 // Database connection credentials and addresses
@@ -29,11 +31,11 @@ initializeApp(firebaseConfig)
 const db = getFirestore()
 
 
+// Play looped music when the site loads.
 
 const music = new Audio('./material/spaceRace.mp3');
 music.loop = true;
 music.play()
-
 
 
 // Retreives canvas element from HTML
@@ -75,17 +77,30 @@ var velocity = 1;
 
 class Explosion {
 
+    /*This class holds the all the attributes and methods necessary to display an explosion
+    when a meteor is destroyed.*/
+
     constructor(xPosition, yPosition) {
+        
+        // Position of the explosion. They are the same as the meteor's position.
 
         this.x = xPosition
         this.y = yPosition
 
+        // Size of explosion.
+
         this.width = 300
         this.height = 300
 
+        // "frameCounter" attribute is used to measure how long a frame is displayed on screen.
+
         this.frameCounter = 0
+
+        // "spriteSelection" attribute will choose which sprite frame will be displayed.
+
         this.spriteSelection = 0
-            // Loads image and sets size and position. 
+
+        // The "sprites" attribute holds all the frames for the explosion animation.
 
         this.sprites = [
             './material/explosion/1.png',
@@ -126,15 +141,16 @@ class Explosion {
         ]
     }
 
-    loadImage() {
-
-
-
-        if (this.frameCounter == 2) {
+    loadImage(){
+        
+        // Every two frames, increase the spriteSelection attribute; which would load the next frame.
+        
+        /*
+        if (this.frameCounter == 2){
             this.spriteSelection += 1
-        }
+        }*/
 
-
+        // Load the explosion frame that will be used.
 
         const image = new Image()
         image.src = this.sprites[this.spriteSelection]
@@ -153,37 +169,35 @@ class Explosion {
 
     draw() {
 
+        // Load frame.
+
         this.loadImage()
 
+        // If frame exist, display frame on specified location.
 
         if (this.image) {
-
-            //this.x = this.x - (velocity * this.speeder);
-
-            if (typeof this.image == undefined) {
-                console.log('Hey man your image is undefined again.')
-            }
             c.drawImage(
                 this.image,
                 this.x,
                 this.y,
                 this.width,
                 this.height)
-
         }
     }
 
-    increment_frame_counter() {
-        if (this.frameCounter == 2) {
-            this.frameCounter = 0
-            this.spriteSelection += 1
-        } else {
+
+    // When called in the game loop, this method will increse the frame counter by 1.
+
+    increment_frame_counter(){
+
+        if (this.frameCounter == 1) { //Every two frames, the counter is reset.
+            this.frameCounter = 0 
+            this.spriteSelection += 1 
+        }
+        else {
             this.frameCounter += 1
         }
     }
-
-
-
 }
 
 
@@ -397,6 +411,38 @@ class Player {
                 this.height)
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 class Meteor {
@@ -813,8 +859,8 @@ class Input {
             };
         })
     }
-
 }
+
 
 
 // Initialize input class.
