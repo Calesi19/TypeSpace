@@ -1,4 +1,3 @@
-
 // Import modules used to connect to Firestore/Firebase Database
 
 import {
@@ -41,16 +40,21 @@ music.play()
 
 var canvas = document.getElementById("canV");
 var c = canvas.getContext("2d");
-
+const titleScreen = document.getElementById('titleScreen');
 // Loads background video into HTML
 
 var video = document.createElement("video");
 video.src = "material/spaceBackGroundMoving.mp4";
 video.muted = true;
-video.addEventListener('loadeddata', function () {
-    video.play(); // start playing
-    update(); //Start rendering
-})
+
+titleScreen.addEventListener('click', function() {
+        titleScreen.style.display = 'none';
+        video.play(); // start playing
+        update(); //Start rendering
+    })
+    // video.addEventListener('loadeddata', function () {
+
+// })
 
 // Sets canvas dimensions
 
@@ -72,7 +76,7 @@ var velocity = 1;
 class Explosion {
 
     constructor(xPosition, yPosition) {
-        
+
         this.x = xPosition
         this.y = yPosition
 
@@ -81,7 +85,7 @@ class Explosion {
 
         this.frameCounter = 0
         this.spriteSelection = 0
-        // Loads image and sets size and position. 
+            // Loads image and sets size and position. 
 
         this.sprites = [
             './material/explosion/1.png',
@@ -118,18 +122,19 @@ class Explosion {
             './material/explosion/30.png',
             './material/explosion/31.png',
             './material/explosion/32.png',
-            './material/explosion/33.png']
+            './material/explosion/33.png'
+        ]
     }
 
-    loadImage(){
-        
-        
-        
-        if (this.frameCounter == 2){
+    loadImage() {
+
+
+
+        if (this.frameCounter == 2) {
             this.spriteSelection += 1
         }
 
-        
+
 
         const image = new Image()
         image.src = this.sprites[this.spriteSelection]
@@ -152,9 +157,9 @@ class Explosion {
 
 
         if (this.image) {
-            
+
             //this.x = this.x - (velocity * this.speeder);
-            
+
             if (typeof this.image == undefined) {
                 console.log('Hey man your image is undefined again.')
             }
@@ -164,16 +169,15 @@ class Explosion {
                 this.y,
                 this.width,
                 this.height)
-           
+
         }
     }
 
-    increment_frame_counter(){
+    increment_frame_counter() {
         if (this.frameCounter == 2) {
             this.frameCounter = 0
             this.spriteSelection += 1
-        }
-        else {
+        } else {
             this.frameCounter += 1
         }
     }
@@ -191,7 +195,7 @@ class Planet {
 
     constructor(planetChoice) {
 
-        this.velocity = .25  // Standard velocity.
+        this.velocity = .25 // Standard velocity.
 
         //load image
 
@@ -230,7 +234,7 @@ class Life {
 
     constructor() {
 
-        this.life = 3      
+        this.life = 3
         this.image;
         this.loadImage()
 
@@ -341,13 +345,13 @@ class Player {
     // The player class holds and sets the parameters and methods necessary to draw the ship on the screen.
 
     constructor() {
-        
+
         this.frameCounter = 0
 
     }
 
 
-    loadImage(){
+    loadImage() {
         // Loads ship image.
 
 
@@ -356,11 +360,11 @@ class Player {
         if (this.frameCounter == 0) {
             image.src = './material/spaceShip.png'
         }
-        if (this.frameCounter > 0){
+        if (this.frameCounter > 0) {
             image.src = './material/spaceShipHealed.png'
             this.frameCounter -= 1
         }
-        if (this.frameCounter < 0){
+        if (this.frameCounter < 0) {
             image.src = './material/spaceShipHurt.png'
             this.frameCounter += 1
         }
@@ -420,7 +424,7 @@ class Meteor {
         // The "speeder" variable chooses a random value, later to be used to randomize object velocity.
 
         this.speeder = (Math.floor(Math.random() * 3)) + 1
-        
+
         // Loads image and sets size and position. 
 
         const image = new Image()
@@ -454,7 +458,7 @@ class Meteor {
         }
     }
 
-    getPosition(){
+    getPosition() {
         return [this.x, this.y];
     }
 
@@ -474,7 +478,7 @@ class LifeBonus {
         from 0 to 6300. */
 
         this.randomNumber = (Math.floor(Math.random() * 6300)) + 1
-        
+
         // A word from the database is picked whose id matches the "randomNumber" value.
 
         this.q = query(collection(db, "words"), where("id", "==", this.randomNumber));
@@ -489,7 +493,7 @@ class LifeBonus {
         // The "speeder" variable chooses a random value, later to be used to randomize object velocity.
 
         this.speeder = (Math.floor(Math.random() * 3)) + 1
-        
+
         // Load image and set size and position.
 
         const image = new Image()
@@ -536,9 +540,9 @@ class Actors {
         // There are five different planet images stored in a list.
 
         this.planetChoice = ['./material/planet1.png', './material/planet2.png', './material/planet3.png', './material/planet4.png', './material/planet5.png'];
-        
+
         // When actor's class is initialized, three meteors are spawned on the screen.
-        
+
         this.meteors = [new Meteor(), new Meteor(), new Meteor()];
 
         // When actor's class is initialized, no bonus lifes are spawned on the screen.
@@ -555,7 +559,7 @@ class Actors {
     }
 
     // The following method chooses which planet image is used when a planet spawns.
-    
+
     choosePlanet() {
 
         /* When list of planet is not empty, pick a random picture. Then remove
@@ -566,11 +570,10 @@ class Actors {
             var planetAddress = this.planetChoice[choice]
             this.planetChoice.splice(choice, 1);
             return planetAddress
-        } 
-        
+        }
+
         /* If the list of planet pictures is empty, repopulate the list and pick a random picture.
         Then remove the picture from the list, so that it can't be picked again later on. */
-        
         else {
             this.planetChoice = ['./material/planet1.png', './material/planet2.png', './material/planet3.png', './material/planet4.png', './material/planet5.png']
             var choice = Math.floor(Math.random() * this.planetChoice.length)
@@ -636,7 +639,7 @@ class Actors {
 
         // Current problem is that it's being cleared too quickly
         console.log('pew pew')
-                
+
 
         // set line stroke and line width
         c.strokeStyle = 'red';
@@ -646,8 +649,8 @@ class Actors {
         c.beginPath();
         // c.moveTo(50, (canvas.height / 2) - (this.height) + 50);
         // c.lineTo(objectX, objectY);
-        c.moveTo(100,100)
-        c.lineTo(1000,1000)
+        c.moveTo(100, 100)
+        c.lineTo(1000, 1000)
         c.stroke();
     }
 
@@ -663,7 +666,7 @@ class Actors {
         this.planets.splice(index, 1);
     }
 
-    addExplosion(xPosition, yPosition){
+    addExplosion(xPosition, yPosition) {
         this.explosions.push(new Explosion(xPosition, yPosition))
     }
 
@@ -718,7 +721,7 @@ class Input {
     // Event listener, handle input, deal with letters, backspace, and enter/spacebar
 
     checkForInput(life) {
-        document.addEventListener('keydown', function (e) {
+        document.addEventListener('keydown', function(e) {
             switch (e.keyCode) {
                 case 13: // enter
                     input.checkWord(life);
@@ -838,7 +841,7 @@ var lifeFrequency = 0;
 
 
 function update() {
-    
+
 
     // Clears the screen from all elements.
 
@@ -860,7 +863,7 @@ function update() {
     }
 
     // Draws the planet on the screen (and updates its position).
-    
+
     for (var i = 0; i < actors.planets.length; i++) {
         if (actors.planets.length != 0) {
             actors.planets[i].draw()
@@ -871,18 +874,18 @@ function update() {
 
     for (var i = 0; i < actors.meteors.length; i++) {
         if (actors.meteors[i].x < 50) {
-            actors.destroyMeteor(i)    // Destroy meteors if it reaches ship.
-            actors.spawnMeteor()       // Spawn new meteor.
-            life.loseLife(player)            // Lose life.
+            actors.destroyMeteor(i) // Destroy meteors if it reaches ship.
+            actors.spawnMeteor() // Spawn new meteor.
+            life.loseLife(player) // Lose life.
             if (life.getLife() == 0) {
-                alert("Game Over - Your Score is: " + parseInt(score.getScore()))    //If life reaches 0, end game.
+                alert("Game Over - Your Score is: " + parseInt(score.getScore())) //If life reaches 0, end game.
             }
         }
     }
 
     // Every time the player gaines 100 points, add a new meteor into the loop.
 
-    if (Math.floor(score.getScore()) % 100 == 0) {       
+    if (Math.floor(score.getScore()) % 100 == 0) {
         actors.spawnMeteor()
         score.score += 1 //Add one to make sure score isn't 100 by next frame.
     }
@@ -896,7 +899,7 @@ function update() {
         }
     }
 
-    
+
     for (var i = 0; i < actors.explosions.length; i++) {
         if (actors.explosions.length != 0) {
             actors.explosions[i].draw()
@@ -912,7 +915,7 @@ function update() {
 
     for (var i = 0; i < actors.explosions.length; i++) {
         if (actors.explosions.length != 0) {
-            if (actors.explosions[i].spriteSelection == 32){
+            if (actors.explosions[i].spriteSelection == 32) {
                 actors.explosions.splice(i, 1)
             }
         }
@@ -978,12 +981,3 @@ function update() {
     requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
 
 }
-
-
-
-
-
-
-
-
-
