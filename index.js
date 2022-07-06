@@ -45,6 +45,7 @@ var c = canvas.getContext("2d");
 const titleScreen = document.getElementById('titleScreen');
 // Loads background video into HTML
 
+// For some reaosn, getting rid of these lines breaks the program. There's not a video anymore, though. Weird.
 var video = document.createElement("video");
 video.src = "material/spaceBackGroundMoving.mp4";
 video.muted = true;
@@ -54,9 +55,6 @@ titleScreen.addEventListener('click', function() {
         video.play(); // start playing
         update(); //Start rendering
     })
-    // video.addEventListener('loadeddata', function () {
-
-// })
 
 // Sets canvas dimensions
 
@@ -72,7 +70,6 @@ c.fillStyle = "white";
 // Standard velocity.
 
 var velocity = 1;
-
 
 
 class Explosion {
@@ -201,8 +198,6 @@ class Explosion {
 }
 
 
-
-
 class Planet {
 
     // This class for the planets spawning in the background of the game.
@@ -239,7 +234,84 @@ class Planet {
     }
 }
 
+class StarsSmall {
+    loadImage() {
+        const image = new Image()
+        image.src = "./material/star_small.png"
+        image.onload = () => {
+            this.image = image
+            this.width = 1920
+            this.height = 1080
+            this.position = {
+                x: 0,
+                y: 0
+            }
+        }
+    }
+    draw() {
+        this.loadImage()
+        if (this.image)
+            c.drawImage(
+                this.image,
+                this.position.x,
+                this.position.y,
+                this.width,
+                this.height)
+    }
 
+}
+class StarsMedium {
+    loadImage() {
+        const image = new Image()
+        image.src = "./material/star_medium.png"
+        image.onload = () => {
+            this.image = image
+            this.width = 1920
+            this.height = 1080
+            this.position = {
+                x: 0,
+                y: 0
+            }
+        }
+    }
+    draw() {
+        this.loadImage()
+        if (this.image)
+            c.drawImage(
+                this.image,
+                this.position.x,
+                this.position.y,
+                this.width,
+                this.height)
+    }
+
+}
+class StarsBig {
+    loadImage() {
+        const image = new Image()
+        image.src = "./material/star_big.png"
+        image.onload = () => {
+            this.image = image
+            this.width = 1920
+            this.height = 1080
+            this.position = {
+                x: 0,
+                y: 0
+            }
+        }
+    }
+    draw() {
+        this.loadImage()
+        if (this.image)
+            c.drawImage(
+                this.image,
+                this.position.x,
+                this.position.y,
+                this.width,
+                this.height)
+    }
+
+}
 
 class Life {
 
@@ -324,7 +396,6 @@ class Life {
 }
 
 
-
 class Score {
 
     // The score class keeps track of the student's current score points, draws the scores on the screen, and increments the score each frame.
@@ -361,8 +432,7 @@ class Player {
     constructor() {
 
         this.frameCounter = 0
-
-    }
+        }
 
 
     loadImage() {
@@ -411,38 +481,6 @@ class Player {
                 this.height)
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 class Meteor {
@@ -509,8 +547,6 @@ class Meteor {
     }
 
 }
-
-
 
 
 class LifeBonus {
@@ -862,7 +898,6 @@ class Input {
 }
 
 
-
 // Initialize input class.
 const input = new Input();
 
@@ -878,6 +913,9 @@ const actors = new Actors();
 //Initialize life class.
 const life = new Life();
 
+const starsSmall = new StarsSmall();
+const starsMedium = new StarsMedium();
+const starsBig = new StarsBig();
 //Start keyboard key listeners
 input.checkForInput(life)
 
@@ -886,16 +924,20 @@ The "lifeFrequency" variable holds a value that determines whether or not a bonu
 var lifeFrequency = 0;
 
 
+
+
 function update() {
-
-
     // Clears the screen from all elements.
 
     c.clearRect(0, 0, canvas.width, canvas.height);
+    starsSmall.draw()
+    starsMedium.draw()
+    starsBig.draw()
 
     // Draws next frame of background video.
 
     c.drawImage(video, 0, 0, 1920, 1080);
+
 
     // Checks if it needs to destroy and spawn a planet.
 
@@ -993,6 +1035,7 @@ function update() {
 
     // Display the player's current score on the screen.
 
+
     score.draw()
 
     // Draw the player ship on the screen.
@@ -1010,6 +1053,7 @@ function update() {
     // Display the letters the user has currently typed.
 
     input.draw()
+
 
     /* Increase "lifeFrequency" increments by 1 each frame. */
 
