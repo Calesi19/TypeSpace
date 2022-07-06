@@ -43,6 +43,9 @@ music.play()
 var canvas = document.getElementById("canV");
 var c = canvas.getContext("2d");
 const titleScreen = document.getElementById('titleScreen');
+
+let gameOver = false;
+
 // Loads background video into HTML
 
 // For some reaosn, getting rid of these lines breaks the program. There's not a video anymore, though. Weird.
@@ -78,7 +81,7 @@ class Explosion {
     when a meteor is destroyed.*/
 
     constructor(xPosition, yPosition) {
-        
+
         // Position of the explosion. They are the same as the meteor's position.
 
         this.x = xPosition
@@ -138,10 +141,10 @@ class Explosion {
         ]
     }
 
-    loadImage(){
-        
+    loadImage() {
+
         // Every two frames, increase the spriteSelection attribute; which would load the next frame.
-        
+
         /*
         if (this.frameCounter == 2){
             this.spriteSelection += 1
@@ -185,13 +188,12 @@ class Explosion {
 
     // When called in the game loop, this method will increse the frame counter by 1.
 
-    increment_frame_counter(){
+    increment_frame_counter() {
 
         if (this.frameCounter == 1) { //Every two frames, the counter is reset.
-            this.frameCounter = 0 
-            this.spriteSelection += 1 
-        }
-        else {
+            this.frameCounter = 0
+            this.spriteSelection += 1
+        } else {
             this.frameCounter += 1
         }
     }
@@ -958,18 +960,7 @@ function update() {
         }
     }
 
-    // Checks if meteors have reached ship.
 
-    for (var i = 0; i < actors.meteors.length; i++) {
-        if (actors.meteors[i].x < 50) {
-            actors.destroyMeteor(i) // Destroy meteors if it reaches ship.
-            actors.spawnMeteor() // Spawn new meteor.
-            life.loseLife(player) // Lose life.
-            if (life.getLife() == 0) {
-                alert("Game Over - Your Score is: " + parseInt(score.getScore())) //If life reaches 0, end game.
-            }
-        }
-    }
 
     // Every time the player gaines 100 points, add a new meteor into the loop.
 
@@ -1066,8 +1057,24 @@ function update() {
         lifeFrequency = 0;
     }
 
-    // Runs the game loop
+    // Checks if meteors have reached ship.
 
-    requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
+    for (var i = 0; i < actors.meteors.length; i++) {
+        if (actors.meteors[i].x < 50) {
+            actors.destroyMeteor(i) // Destroy meteors if it reaches ship.
+            actors.spawnMeteor() // Spawn new meteor.
+            life.loseLife(player) // Lose life.
+            if (life.getLife() == 0) {
+                gameOver = true;
+                c.fillStyle = 'blue';
+                c.fillRect(0, 0, canvas.height * 2, canvas.width);
+            }
+        }
+    }
+
+    // Runs the game loop
+    if (!gameOver) {
+        requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
+    }
 
 }
