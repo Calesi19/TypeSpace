@@ -1,20 +1,25 @@
 body {
     margin: 0;
     background-color: black;
+    margin: 0;
+    display: flex;
+    justify-content: center;
 }
 
 #titleScreen {
     position: relative;
-    top: 0;
-    left: 0;
     max-width: 1920px;
     height: 1080px;
+    margin: 0;
+    display: flex;
+    justify-content: center;
 }
 
 #canV {
     position: absolute;
-    top: 0;
-    left: 0;
     max-width: 100%;
     height: auto;
+    margin: 0;
+    display: flex;
+    justify-content: center;
 }
