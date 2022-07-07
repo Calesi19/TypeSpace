@@ -11,6 +11,9 @@ import {
     onSnapshot,
     doc,
     setDoc,
+    orderBy,
+    limit,
+    getDocs
 } from 'https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js'
 
 // Database connection credentials and addresses
@@ -322,7 +325,7 @@ class Life {
 
     constructor() {
 
-        this.life = 3
+        this.life = 1 // set starting lives amount
         this.image;
         this.loadImage()
 
@@ -500,10 +503,14 @@ class Meteor {
         // A word from the database is picked whose id matches the "randomNumber" value.
 
         this.q = query(collection(db, "words"), where("id", "==", this.randomNumber));
+        // console.log('word from database' + this.q);
         this.unsubscribe = onSnapshot(this.q, (querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 // console.log(doc.data().word);
                 this.word = doc.data().word; // Word is assigned to meteor.
+                console.log('random word' + this.word);
+                // this.playerScore = doc.data().playerScore;
+                // console.log(this.playerScore);
             })
         });
 
@@ -976,7 +983,7 @@ function update() {
     for (var i = 0; i < actors.lasers.length; i++) {
         if (actors.lasers.length != 0) {
             actors.lasers[i].draw();
-            console.log('calling draw()');
+            // console.log('calling draw()');
         }
     }
 
@@ -1099,10 +1106,18 @@ function update() {
             actors.spawnMeteor() // Spawn new meteor.
             life.loseLife(player) // Lose life.
             if (life.getLife() == 0) { // test if lives are gone
-                gameOver = true;
-                // c.fillStyle = 'blue';
-                // c.fillRect(0, 0, canvas.height * 2, canvas.width);
+                gameOver = true; // stops game loop
+                const w = query(collection(db, 'playerScores'), orderBy('score', 'desc'), limit(1))
+                var unsubscribe1 = onSnapshot(w, (querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        const topScore = doc.data().score; // top score
+                        c.fillText('Game Over', 850, 500);
+                        c.fillText('Top score: ' + topScore, 850, 600);
+
+                    })
+                })
             }
+
         }
     }
 
