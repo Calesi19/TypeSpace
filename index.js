@@ -49,13 +49,13 @@ let gameOver = false; // loops game if gameOver = false
 // Loads background video into HTML
 
 // For some reaosn, getting rid of these lines breaks the program. There's not a video anymore, though. Weird.
-var video = document.createElement("video");
-video.src = "material/spaceBackGroundMoving.mp4";
-video.muted = true;
+// var video = document.createElement("video");
+// video.src = "material/spaceBackGroundMoving.mp4";
+// video.muted = true;
 
 titleScreen.addEventListener('click', function() {
     titleScreen.style.display = 'none';
-    video.play(); // start playing
+    // video.play(); // start playing
     update(); //Start rendering
 })
 
@@ -950,7 +950,7 @@ function update() {
 
     // Draws next frame of background video.
 
-    c.drawImage(video, 0, 0, 1920, 1080);
+    // c.drawImage(video, 0, 0, 1920, 1080);
 
 
     // Checks if it needs to destroy and spawn a planet.
@@ -1098,10 +1098,10 @@ function update() {
             actors.destroyMeteor(i) // Destroy meteors if it reaches ship.
             actors.spawnMeteor() // Spawn new meteor.
             life.loseLife(player) // Lose life.
-            if (life.getLife() == 0) {
+            if (life.getLife() == 0) { // test if lives are gone
                 gameOver = true;
-                c.fillStyle = 'blue';
-                c.fillRect(0, 0, canvas.height * 2, canvas.width);
+                // c.fillStyle = 'blue';
+                // c.fillRect(0, 0, canvas.height * 2, canvas.width);
             }
         }
     }
