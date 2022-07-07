@@ -746,25 +746,7 @@ class Actors {
     }
 
 
-    drawLaser(objectX, objectY) {
-        /* Draw a laser from the ship to the actor being destroyed, pass in coordinates of target object */
 
-        // Current problem is that it's being cleared too quickly
-        console.log('pew pew')
-
-
-        // set line stroke and line width
-        c.strokeStyle = 'red';
-        c.lineWidth = 50;
-
-        // draw a red line
-        c.beginPath();
-        // c.moveTo(50, (canvas.height / 2) - (this.height) + 50);
-        // c.lineTo(objectX, objectY);
-        c.moveTo(100, 100)
-        c.lineTo(1000, 1000)
-        c.stroke();
-    }
 
     // Add a new instance of Planet to the "planets" list. (Spawn a planet on screen.)
 
