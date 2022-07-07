@@ -44,7 +44,7 @@ var canvas = document.getElementById("canV");
 var c = canvas.getContext("2d");
 const titleScreen = document.getElementById('titleScreen');
 
-let gameOver = false;
+let gameOver = false; // loops game if gameOver = false
 
 // Loads background video into HTML
 
@@ -54,10 +54,10 @@ video.src = "material/spaceBackGroundMoving.mp4";
 video.muted = true;
 
 titleScreen.addEventListener('click', function() {
-        titleScreen.style.display = 'none';
-        video.play(); // start playing
-        update(); //Start rendering
-    })
+    titleScreen.style.display = 'none';
+    video.play(); // start playing
+    update(); //Start rendering
+})
 
 // Sets canvas dimensions
 
@@ -434,7 +434,7 @@ class Player {
     constructor() {
 
         this.frameCounter = 0
-        }
+    }
 
 
     loadImage() {
@@ -632,7 +632,7 @@ class Laser {
         c.beginPath();
         // c.moveTo(50, (canvas.height / 2) - (this.height) + 50);
         // c.lineTo(objectX, objectY);
-        c.moveTo(300, canvas.height/2 - 40)
+        c.moveTo(300, canvas.height / 2 - 40)
         c.lineTo(this.x, this.y)
         c.stroke();
     }
@@ -1070,7 +1070,7 @@ function update() {
         }
     }
 
-    
+
 
     // Increment the player's score in each frame.
 
@@ -1129,6 +1129,6 @@ function update() {
         requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
     }
 
-    requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
+    // requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
 
 }
