@@ -8,8 +8,8 @@ body {
 
 #titleScreen {
     position: relative;
-    max-width: 1920px;
-    height: 1080px;
+    max-width: 100%;
+    height: auto;
     margin: 0;
     display: flex;
     justify-content: center;
@@ -17,7 +17,7 @@ body {
 
 #canV {
     position: absolute;
-    max-width: 100%;
+    max-width: 80%;
     height: auto;
     margin: 0;
     display: flex;
