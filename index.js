@@ -11,6 +11,10 @@ import {
     onSnapshot,
     doc,
     setDoc,
+    getDoc,
+    orderBy,
+    limit,
+    getDocs
 } from 'https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js'
 
 // Database connection credentials and addresses
@@ -71,7 +75,20 @@ c.fillStyle = "white";
 
 // Standard velocity.
 
-var velocity = 1;
+var velocity = 3;
+
+
+
+const q = query(collection(db, "playerScores"), orderBy("score", "desc"), limit(3));
+
+
+var unsubscribe1 = onSnapshot(q, (querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+        console.log(doc.data().score); // Word is assigned to meteor.
+        console.log(doc.data().username);
+    })
+});
+
 
 
 
@@ -142,13 +159,6 @@ class Explosion {
     }
 
     loadImage(){
-        
-        // Every two frames, increase the spriteSelection attribute; which would load the next frame.
-        
-        /*
-        if (this.frameCounter == 2){
-            this.spriteSelection += 1
-        }*/
 
         // Load the explosion frame that will be used.
 
@@ -462,7 +472,6 @@ class Meteor {
         this.q = query(collection(db, "words"), where("id", "==", this.randomNumber));
         this.unsubscribe = onSnapshot(this.q, (querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                // console.log(doc.data().word);
                 this.word = doc.data().word; // Word is assigned to meteor.
             })
         });
@@ -924,7 +933,26 @@ function update() {
             actors.spawnMeteor() // Spawn new meteor.
             life.loseLife(player) // Lose life.
             if (life.getLife() == 0) {
-                alert("Game Over - Your Score is: " + parseInt(score.getScore())) //If life reaches 0, end game.
+
+                //alert("Game Over - Your Score is: " + parseInt(score.getScore())) //If life reaches 0, end game.
+                const username = prompt("Enter your username:", "Username")
+                const playerData = {username: username.toUpperCase(), score: Math.floor(score.getScore())}
+                const docRef = doc(db, "playerScores", username.toUpperCase());
+                
+
+                getDoc(docRef).then(docSnap => {
+                    if (docSnap.exists()) {
+                        console.log("Document data:", docSnap.data()["score"]);
+                        if (docSnap.data().score < score.getScore()){
+                            setDoc(doc(db, "playerScores", username.toUpperCase()), playerData)
+                      }
+                    }   
+                    else {
+                        console.log("doesn't exist")    
+                        setDoc(doc(db, "playerScores", username.toUpperCase()), playerData)
+                    }
+                  })
+
             }
         }
     }
@@ -946,6 +974,8 @@ function update() {
     }
 
 
+    // Draw each explosion on the screen (and update their position).
+
     for (var i = 0; i < actors.explosions.length; i++) {
         if (actors.explosions.length != 0) {
             actors.explosions[i].draw()
@@ -953,11 +983,15 @@ function update() {
     }
 
 
+    // Update frame counter for each explosion of the screen.
+
     for (var i = 0; i < actors.explosions.length; i++) {
         if (actors.explosions.length != 0) {
             actors.explosions[i].increment_frame_counter()
         }
     }
+
+    // Update frame used for each explosion displayed on the screen.
 
     for (var i = 0; i < actors.explosions.length; i++) {
         if (actors.explosions.length != 0) {
@@ -966,7 +1000,6 @@ function update() {
             }
         }
     }
-
 
 
     // Draw any bonus lives that have spawned.
@@ -1027,3 +1060,4 @@ function update() {
     requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
 
 }
+
