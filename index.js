@@ -491,39 +491,84 @@ class Meteor {
     spawn and draw a meteor on the screen for the player to destroy. */
 
     constructor() {
+        if (!gameOver) {
+            /* Since there are roughly 6300 words in the database, this variable chooses a random number
+            from 0 to 6300. */
 
-        /* Since there are roughly 6300 words in the database, this variable chooses a random number
-        from 0 to 6300. */
+            this.randomNumber = (Math.floor(Math.random() * 6300)) + 1
 
-        this.randomNumber = (Math.floor(Math.random() * 6300)) + 1
+            // A word from the database is picked whose id matches the "randomNumber" value.
 
-        // A word from the database is picked whose id matches the "randomNumber" value.
+            this.q = query(collection(db, "words"), where("id", "==", this.randomNumber));
+            this.unsubscribe = onSnapshot(this.q, (querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    // console.log(doc.data().word);
+                    this.word = doc.data().word; // Word is assigned to meteor.
+                })
+            });
 
-        this.q = query(collection(db, "words"), where("id", "==", this.randomNumber));
-        this.unsubscribe = onSnapshot(this.q, (querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                // console.log(doc.data().word);
-                this.word = doc.data().word; // Word is assigned to meteor.
-            })
-        });
+            // The "speeder" variable chooses a random value, later to be used to randomize object velocity.
 
-        // The "speeder" variable chooses a random value, later to be used to randomize object velocity.
+            this.speeder = (Math.floor(Math.random() * 3)) + 1
 
-        this.speeder = (Math.floor(Math.random() * 3)) + 1
+            // Loads image and sets size and position. 
 
-        // Loads image and sets size and position. 
+            const image = new Image()
+            image.src = './material/Asteroid.gif'
+            image.onload = () => {
+                const scale = 0.1 + (Math.random() / 4)
+                this.image = image
+                this.width = image.width * scale
+                this.height = image.height * scale
+                this.x = canvas.width - this.width + 500
+                this.y = Math.floor(Math.random() * (900 - 100 + 1) + 100)
+            }
+        }
+        else if (!endMeteor) {
+            endMeteor = true;
 
-        const image = new Image()
-        image.src = './material/Asteroid.gif'
-        image.onload = () => {
-            const scale = 0.1 + (Math.random() / 4)
-            this.image = image
-            this.width = image.width * scale
-            this.height = image.height * scale
-            this.x = canvas.width - this.width + 500
-            this.y = Math.floor(Math.random() * (900 - 100 + 1) + 100)
+            this.word = 'WASTED';
+
+            // The "speeder" variable chooses a random value, later to be used to randomize object velocity.
+
+            this.speeder = 5
+
+            // Loads image and sets size and position. 
+
+            const image = new Image()
+            image.src = './material/Asteroid.gif'
+            image.onload = () => {
+                const scale = 1
+                this.image = image
+                this.width = image.width * scale
+                this.height = image.height * scale
+                this.x = canvas.width - this.width + 500
+                this.y = canvas.height * 0.25
+            }
         }
     }
+
+    // Make the big final meteor
+    // finalMeteor() {
+    //     this.word = 'WASTED';
+
+    //     // The "speeder" variable chooses a random value, later to be used to randomize object velocity.
+
+    //     this.speeder = 3
+
+    //     // Loads image and sets size and position. 
+
+    //     const image = new Image()
+    //     image.src = './material/Asteroid.gif'
+    //     image.onload = () => {
+    //         const scale = 0.5
+    //         this.image = image
+    //         this.width = image.width * scale
+    //         this.height = image.height * scale
+    //         this.x = canvas.width - this.width + 500
+    //         this.y = canvas.height / 2
+    //     }
+    // }
 
     // This method draws the meteor on the screen and updates its position.
 
@@ -810,101 +855,106 @@ class Input {
     draw() {
         c.font = +parseInt((50)) + 'px monospace';
         c.fillText(this.targetWord.join(""), 15, 1000)
+        if (gameOver) {
+            this.targetWord = [];
+        }
     }
 
     // Event listener, handle input, deal with letters, backspace, and enter/spacebar
 
     checkForInput(life) {
         document.addEventListener('keydown', function(e) {
-            switch (e.keyCode) {
-                case 13: // enter
-                    input.checkWord(life);
-                    break;
-                case 32: // spacebar
-                    input.checkWord(life);
-                    break;
-                case 8: // backspace
-                    input.deleteLetter();
-                    break;
-                case 65: // a
-                    input.addLetter('A')
-                    break;
-                case 66: // b
-                    input.addLetter('B')
-                    break;
-                case 67: // c
-                    input.addLetter('C')
-                    break;
-                case 68: // d
-                    input.addLetter('D')
-                    break;
-                case 69: // e
-                    input.addLetter('E')
-                    break;
-                case 70: // f
-                    input.addLetter('F')
-                    break;
-                case 71: // g
-                    input.addLetter('G')
-                    break;
-                case 72: // h
-                    input.addLetter('H')
-                    break;
-                case 73: // i
-                    input.addLetter('I')
-                    break;
-                case 74: // j
-                    input.addLetter('J')
-                    break;
-                case 75: // k
-                    input.addLetter('K')
-                    break;
-                case 76: // l
-                    input.addLetter('L')
-                    break;
-                case 77: // m
-                    input.addLetter('M')
-                    break;
-                case 78: // n
-                    input.addLetter('N')
-                    break;
-                case 79: // o
-                    input.addLetter('O')
-                    break;
-                case 80: // p
-                    input.addLetter('P')
-                    break;
-                case 81: // q
-                    input.addLetter('Q')
-                    break;
-                case 82: // r
-                    input.addLetter('R')
-                    break;
-                case 83: // s
-                    input.addLetter('S')
-                    break;
-                case 84: // t
-                    input.addLetter('T')
-                    break;
-                case 85: // u
-                    input.addLetter('U')
-                    break;
-                case 86: // v
-                    input.addLetter('V')
-                    break;
-                case 87: // w
-                    input.addLetter('W')
-                    break;
-                case 88: // x
-                    input.addLetter('X')
-                    break;
-                case 89: // y
-                    input.addLetter('Y')
-                    break;
-                case 90: // z
-                    input.addLetter('Z')
-                    break;
+            if (!gameOver) {
+                switch (e.keyCode) {
+                    case 13: // enter
+                        input.checkWord(life);
+                        break;
+                    case 32: // spacebar
+                        input.checkWord(life);
+                        break;
+                    case 8: // backspace
+                        input.deleteLetter();
+                        break;
+                    case 65: // a
+                        input.addLetter('A')
+                        break;
+                    case 66: // b
+                        input.addLetter('B')
+                        break;
+                    case 67: // c
+                        input.addLetter('C')
+                        break;
+                    case 68: // d
+                        input.addLetter('D')
+                        break;
+                    case 69: // e
+                        input.addLetter('E')
+                        break;
+                    case 70: // f
+                        input.addLetter('F')
+                        break;
+                    case 71: // g
+                        input.addLetter('G')
+                        break;
+                    case 72: // h
+                        input.addLetter('H')
+                        break;
+                    case 73: // i
+                        input.addLetter('I')
+                        break;
+                    case 74: // j
+                        input.addLetter('J')
+                        break;
+                    case 75: // k
+                        input.addLetter('K')
+                        break;
+                    case 76: // l
+                        input.addLetter('L')
+                        break;
+                    case 77: // m
+                        input.addLetter('M')
+                        break;
+                    case 78: // n
+                        input.addLetter('N')
+                        break;
+                    case 79: // o
+                        input.addLetter('O')
+                        break;
+                    case 80: // p
+                        input.addLetter('P')
+                        break;
+                    case 81: // q
+                        input.addLetter('Q')
+                        break;
+                    case 82: // r
+                        input.addLetter('R')
+                        break;
+                    case 83: // s
+                        input.addLetter('S')
+                        break;
+                    case 84: // t
+                        input.addLetter('T')
+                        break;
+                    case 85: // u
+                        input.addLetter('U')
+                        break;
+                    case 86: // v
+                        input.addLetter('V')
+                        break;
+                    case 87: // w
+                        input.addLetter('W')
+                        break;
+                    case 88: // x
+                        input.addLetter('X')
+                        break;
+                    case 89: // y
+                        input.addLetter('Y')
+                        break;
+                    case 90: // z
+                        input.addLetter('Z')
+                        break;
             };
+        }
         })
     }
 }
@@ -937,7 +987,8 @@ input.checkForInput(life)
 The "lifeFrequency" variable holds a value that determines whether or not a bonus life spawns.*/
 var lifeFrequency = 0;
 
-
+// Bool to keep only one end meteor
+var endMeteor = false;
 
 
 function update() {
@@ -1106,11 +1157,18 @@ function update() {
         }
     }
 
-    // Runs the game loop
-    if (!gameOver) {
-        requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
-    }
+    // if (gameOver && !endMeteor) {
+    //     endMeteor = true;
+    //     actors.spawnMeteor();
+    //     var index = actors.meteors.length;
+    //     actors.meteors[index].finalMeteor();
+    // }
 
-    // requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
+    // Runs the game loop
+    // if (!gameOver) {
+    //     requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
+    // }
+
+    requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
 
 }
