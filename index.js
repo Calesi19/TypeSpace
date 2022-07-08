@@ -47,20 +47,21 @@ music.play()
 var canvas = document.getElementById("canV");
 var c = canvas.getContext("2d");
 const titleScreen = document.getElementById('titleScreen');
+
+let gameOver = false; // loops game if gameOver = false
+
 // Loads background video into HTML
 
-var video = document.createElement("video");
-video.src = "material/spaceBackGroundMoving.mp4";
-video.muted = true;
+// For some reaosn, getting rid of these lines breaks the program. There's not a video anymore, though. Weird.
+// var video = document.createElement("video");
+// video.src = "material/spaceBackGroundMoving.mp4";
+// video.muted = true;
 
 titleScreen.addEventListener('click', function() {
-        titleScreen.style.display = 'none';
-        video.play(); // start playing
-        update(); //Start rendering
-    })
-    // video.addEventListener('loadeddata', function () {
-
-// })
+    titleScreen.style.display = 'none';
+    // video.play(); // start playing
+    update(); //Start rendering
+})
 
 // Sets canvas dimensions
 
@@ -75,7 +76,7 @@ c.fillStyle = "white";
 
 // Standard velocity.
 
-var velocity = 3;
+var velocity = 1;
 
 
 
@@ -91,14 +92,13 @@ var unsubscribe1 = onSnapshot(q, (querySnapshot) => {
 
 
 
-
 class Explosion {
 
     /*This class holds the all the attributes and methods necessary to display an explosion
     when a meteor is destroyed.*/
 
     constructor(xPosition, yPosition) {
-        
+
         // Position of the explosion. They are the same as the meteor's position.
 
         this.x = xPosition
@@ -198,19 +198,16 @@ class Explosion {
 
     // When called in the game loop, this method will increse the frame counter by 1.
 
-    increment_frame_counter(){
+    increment_frame_counter() {
 
         if (this.frameCounter == 1) { //Every two frames, the counter is reset.
-            this.frameCounter = 0 
-            this.spriteSelection += 1 
-        }
-        else {
+            this.frameCounter = 0
+            this.spriteSelection += 1
+        } else {
             this.frameCounter += 1
         }
     }
 }
-
-
 
 
 class Planet {
@@ -249,7 +246,84 @@ class Planet {
     }
 }
 
+class StarsSmall {
+    loadImage() {
+        const image = new Image()
+        image.src = "./material/star_small.png"
+        image.onload = () => {
+            this.image = image
+            this.width = 1920
+            this.height = 1080
+            this.position = {
+                x: 0,
+                y: 0
+            }
+        }
+    }
+    draw() {
+        this.loadImage()
+        if (this.image)
+            c.drawImage(
+                this.image,
+                this.position.x,
+                this.position.y,
+                this.width,
+                this.height)
+    }
 
+}
+class StarsMedium {
+    loadImage() {
+        const image = new Image()
+        image.src = "./material/star_medium.png"
+        image.onload = () => {
+            this.image = image
+            this.width = 1920
+            this.height = 1080
+            this.position = {
+                x: 0,
+                y: 0
+            }
+        }
+    }
+    draw() {
+        this.loadImage()
+        if (this.image)
+            c.drawImage(
+                this.image,
+                this.position.x,
+                this.position.y,
+                this.width,
+                this.height)
+    }
+
+}
+class StarsBig {
+    loadImage() {
+        const image = new Image()
+        image.src = "./material/star_big.png"
+        image.onload = () => {
+            this.image = image
+            this.width = 1920
+            this.height = 1080
+            this.position = {
+                x: 0,
+                y: 0
+            }
+        }
+    }
+    draw() {
+        this.loadImage()
+        if (this.image)
+            c.drawImage(
+                this.image,
+                this.position.x,
+                this.position.y,
+                this.width,
+                this.height)
+    }
+
+}
 
 class Life {
 
@@ -258,7 +332,7 @@ class Life {
 
     constructor() {
 
-        this.life = 3
+        this.life = 3 // set starting lives amount
         this.image;
         this.loadImage()
 
@@ -334,7 +408,6 @@ class Life {
 }
 
 
-
 class Score {
 
     // The score class keeps track of the student's current score points, draws the scores on the screen, and increments the score each frame.
@@ -371,7 +444,6 @@ class Player {
     constructor() {
 
         this.frameCounter = 0
-
     }
 
 
@@ -423,38 +495,6 @@ class Player {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class Meteor {
 
     /*The meteor class holds the attributes and methods necessary to 
@@ -470,9 +510,13 @@ class Meteor {
         // A word from the database is picked whose id matches the "randomNumber" value.
 
         this.q = query(collection(db, "words"), where("id", "==", this.randomNumber));
+        // console.log('word from database' + this.q);
         this.unsubscribe = onSnapshot(this.q, (querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 this.word = doc.data().word; // Word is assigned to meteor.
+                console.log('random word' + this.word);
+                // this.playerScore = doc.data().playerScore;
+                // console.log(this.playerScore);
             })
         });
 
@@ -518,8 +562,6 @@ class Meteor {
     }
 
 }
-
-
 
 
 class LifeBonus {
@@ -584,6 +626,31 @@ class LifeBonus {
     }
 }
 
+class Laser {
+    constructor(objectX, objectY) {
+
+        this.x = objectX + 100;
+        this.y = objectY + 100;
+        this.counter = 5;
+    }
+
+
+    // Draws the extra life on the screen and updates it position.
+
+    draw() {
+        c.strokeStyle = 'red';
+        c.lineWidth = 25;
+
+        // draw a red line
+        c.beginPath();
+        // c.moveTo(50, (canvas.height / 2) - (this.height) + 50);
+        // c.lineTo(objectX, objectY);
+        c.moveTo(300, canvas.height / 2 - 40)
+        c.lineTo(this.x, this.y)
+        c.stroke();
+    }
+}
+
 
 class Actors {
 
@@ -608,7 +675,9 @@ class Actors {
 
         this.planets = [new Planet(this.choosePlanet())];
 
+        // When actor's class is initialized, initialize lists of lasers and explosions
 
+        this.lasers = [];
         this.explosions = [];
 
     }
@@ -676,7 +745,7 @@ class Actors {
 
         for (let i = 0; i < this.meteors.length; i++) {
             if (this.meteors[i].word == targetWord) {
-                this.drawLaser(this.meteors[i].x, this.meteors[i].y)
+                this.lasers.push(new Laser(this.meteors[i].x, this.meteors[i].y))
                 this.destroyMeteor(i)
                 this.spawnMeteor()
             }
@@ -689,25 +758,8 @@ class Actors {
         }
     }
 
-    drawLaser(objectX, objectY) {
-        /* Draw a laser from the ship to the actor being destroyed, pass in coordinates of target object */
-
-        // Current problem is that it's being cleared too quickly
-        console.log('pew pew')
 
 
-        // set line stroke and line width
-        c.strokeStyle = 'red';
-        c.lineWidth = 50;
-
-        // draw a red line
-        c.beginPath();
-        // c.moveTo(50, (canvas.height / 2) - (this.height) + 50);
-        // c.lineTo(objectX, objectY);
-        c.moveTo(100, 100)
-        c.lineTo(1000, 1000)
-        c.stroke();
-    }
 
     // Add a new instance of Planet to the "planets" list. (Spawn a planet on screen.)
 
@@ -871,7 +923,6 @@ class Input {
 }
 
 
-
 // Initialize input class.
 const input = new Input();
 
@@ -887,7 +938,16 @@ const actors = new Actors();
 //Initialize life class.
 const life = new Life();
 
+
+
+const starsSmall = new StarsSmall();
+const starsMedium = new StarsMedium();
+const starsBig = new StarsBig();
+
+
+
 //Start keyboard key listeners
+
 input.checkForInput(life)
 
 /* Initialize "lifeFrequency" variable at value 0.
@@ -895,16 +955,21 @@ The "lifeFrequency" variable holds a value that determines whether or not a bonu
 var lifeFrequency = 0;
 
 
-function update() {
 
+
+function update() {
 
     // Clears the screen from all elements.
 
     c.clearRect(0, 0, canvas.width, canvas.height);
+    starsSmall.draw()
+    starsMedium.draw()
+    starsBig.draw()
 
     // Draws next frame of background video.
 
-    c.drawImage(video, 0, 0, 1920, 1080);
+    // c.drawImage(video, 0, 0, 1920, 1080);
+
 
     // Checks if it needs to destroy and spawn a planet.
 
@@ -925,37 +990,28 @@ function update() {
         }
     }
 
-    // Checks if meteors have reached ship.
+    // Draws all lasers on the screen
+    for (var i = 0; i < actors.lasers.length; i++) {
+        if (actors.lasers.length != 0) {
+            actors.lasers[i].draw();
+            // console.log('calling draw()');
+        }
+    }
 
-    for (var i = 0; i < actors.meteors.length; i++) {
-        if (actors.meteors[i].x < 50) {
-            actors.destroyMeteor(i) // Destroy meteors if it reaches ship.
-            actors.spawnMeteor() // Spawn new meteor.
-            life.loseLife(player) // Lose life.
-            if (life.getLife() == 0) {
 
-                //alert("Game Over - Your Score is: " + parseInt(score.getScore())) //If life reaches 0, end game.
-                const username = prompt("Enter your username:", "Username")
-                const playerData = {username: username.toUpperCase(), score: Math.floor(score.getScore())}
-                const docRef = doc(db, "playerScores", username.toUpperCase());
-                
 
-                getDoc(docRef).then(docSnap => {
-                    if (docSnap.exists()) {
-                        console.log("Document data:", docSnap.data()["score"]);
-                        if (docSnap.data().score < score.getScore()){
-                            setDoc(doc(db, "playerScores", username.toUpperCase()), playerData)
-                      }
-                    }   
-                    else {
-                        console.log("doesn't exist")    
-                        setDoc(doc(db, "playerScores", username.toUpperCase()), playerData)
-                    }
-                  })
+    // Removes any lasers that need to be removed, otherwise ticks their counter down one
 
+    for (var i = 0; i < actors.lasers.length; i++) {
+        if (actors.lasers.length != 0) {
+            if (actors.lasers[i].counter < 0) {
+                actors.lasers.splice(i); // check to see if this works, haven't tested it yet
+            } else {
+                actors.lasers[i].counter -= 1;
             }
         }
     }
+
 
     // Every time the player gaines 100 points, add a new meteor into the loop.
 
@@ -1020,11 +1076,14 @@ function update() {
         }
     }
 
+
+
     // Increment the player's score in each frame.
 
     score.increment()
 
     // Display the player's current score on the screen.
+
 
     score.draw()
 
@@ -1044,6 +1103,7 @@ function update() {
 
     input.draw()
 
+
     /* Increase "lifeFrequency" increments by 1 each frame. */
 
     lifeFrequency += 1;
@@ -1055,9 +1115,60 @@ function update() {
         lifeFrequency = 0;
     }
 
-    // Runs the game loop
+    // Checks if meteors have reached ship.
 
-    requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
+    for (var i = 0; i < actors.meteors.length; i++) {
+        if (actors.meteors[i].x < 50) {
+            actors.destroyMeteor(i) // Destroy meteors if it reaches ship.
+            actors.spawnMeteor() // Spawn new meteor.
+            life.loseLife(player) // Lose life.
+            if (life.getLife() == 0) { // test if lives are gone
+                gameOver = true; // stops game loop
+
+
+
+
+                const username = prompt("Enter your username:", "Username")
+                const playerData = {username: username.toUpperCase(), score: Math.floor(score.getScore())}
+                const docRef = doc(db, "playerScores", username.toUpperCase());
+                
+
+                getDoc(docRef).then(docSnap => {
+
+                    c.fillText('GAME OVER', 850, 500);
+
+                    if (docSnap.exists()) {
+                        if (docSnap.data().score <= score.getScore()){
+
+                            setDoc(doc(db, "playerScores", username.toUpperCase()), playerData)
+                            
+                            c.fillText('YOUR HIGH SCORE: ' + Math.floor(score.getScore()), 850, 600);
+                        }
+                        else {
+                            c.fillText('YOUR HIGH SCORE: ' + docSnap.data().score, 850, 600);
+                        }
+                    } 
+                    
+                    else {  
+
+                        setDoc(doc(db, "playerScores", username.toUpperCase()), playerData)
+
+                        c.fillText('YOUR HIGH SCORE: ' + Math.floor(score.getScore()), 850, 600);
+                    }
+
+                    c.fillText('YOUR SCORE: ' + Math.floor(score.getScore()), 850, 650);
+                })
+
+            }
+
+        }
+    }
+
+    // Runs the game loop
+    if (!gameOver) {
+        requestAnimationFrame(update); // wait for the browser to be ready to present another animation frame.    
+    }
+
+    // requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
 
 }
-
