@@ -52,12 +52,12 @@ let gameOver = false; // loops game if gameOver = false
 
 // Loads background video into HTML
 
-// For some reaosn, getting rid of these lines breaks the program. There's not a video anymore, though. Weird.
+// For some reason, getting rid of these lines breaks the program. There's not a video anymore, though. Weird.
 // var video = document.createElement("video");
 // video.src = "material/spaceBackGroundMoving.mp4";
 // video.muted = true;
 
-titleScreen.addEventListener('click', function() {
+titleScreen.addEventListener('click', function () {
     titleScreen.style.display = 'none';
     // video.play(); // start playing
     update(); //Start rendering
@@ -149,7 +149,7 @@ class Explosion {
         ]
     }
 
-    loadImage(){
+    loadImage() {
 
         // Load the explosion frame that will be used.
 
@@ -819,7 +819,7 @@ class Input {
     // Event listener, handle input, deal with letters, backspace, and enter/spacebar
 
     checkForInput(life) {
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             switch (e.keyCode) {
                 case 13: // enter
                     input.checkWord(life);
@@ -1120,27 +1120,27 @@ function update() {
 
 
                 const username = prompt("Enter your username:", "Username")
-                const playerData = {username: username.toUpperCase(), score: Math.floor(score.getScore())}
+                const playerData = {
+                    username: username.toUpperCase(),
+                    score: Math.floor(score.getScore())
+                }
                 const docRef = doc(db, "playerScores", username.toUpperCase());
-                
+
 
                 getDoc(docRef).then(docSnap => {
 
                     c.fillText('GAME OVER', 850, 500);
 
                     if (docSnap.exists()) {
-                        if (docSnap.data().score <= score.getScore()){
+                        if (docSnap.data().score <= score.getScore()) {
 
                             setDoc(doc(db, "playerScores", username.toUpperCase()), playerData)
-                            
+
                             c.fillText('YOUR HIGH SCORE: ' + Math.floor(score.getScore()), 850, 600);
-                        }
-                        else {
+                        } else {
                             c.fillText('YOUR HIGH SCORE: ' + docSnap.data().score, 850, 600);
                         }
-                    } 
-                    
-                    else {  
+                    } else {
 
                         setDoc(doc(db, "playerScores", username.toUpperCase()), playerData)
 
@@ -1160,6 +1160,6 @@ function update() {
         requestAnimationFrame(update); // wait for the browser to be ready to present another animation frame.    
     }
 
-    // requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.    
+    // requestAnimationFrame(update); // wait for the browser to be ready to present another animation frame.    
 
 }

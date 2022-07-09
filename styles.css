@@ -17,8 +17,8 @@ body {
 
 #canV {
     position: absolute;
-    max-width: 80%;
-    height: auto;
+    max-width: auto;
+    height: 100%;
     margin: 0;
     display: flex;
     justify-content: center;
