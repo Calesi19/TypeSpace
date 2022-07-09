@@ -145,16 +145,7 @@ class Explosion {
             './material/explosion/21.png',
             './material/explosion/22.png',
             './material/explosion/23.png',
-            './material/explosion/24.png',
-            './material/explosion/25.png',
-            './material/explosion/26.png',
-            './material/explosion/27.png',
-            './material/explosion/28.png',
-            './material/explosion/29.png',
-            './material/explosion/30.png',
-            './material/explosion/31.png',
-            './material/explosion/32.png',
-            './material/explosion/33.png'
+            './material/explosion/24.png'
         ]
     }
 
