@@ -9,8 +9,7 @@ TypeSpace is a typing game that was created from scratch, as a team.  The game c
 * Richard Nanney
 * Nolan Jeppson
 
-## play the game here: ##
-
+** play the game here: **
 [Game](https://calesi19.github.io/TypeSpace/)
 
 [Trello Board](https://trello.com/b/WbZarUBb/typespace)
