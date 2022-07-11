@@ -8,5 +8,6 @@
 * Nolan Jeppson
 
 [Game](https://calesi19.github.io/TypeSpace/)
+
 [Trello Board](https://trello.com/b/WbZarUBb/typespace)
 
