@@ -48,7 +48,45 @@ var canvas = document.getElementById("canV");
 var c = canvas.getContext("2d");
 const titleScreen = document.getElementById('titleScreen');
 
+
 let gameOver = false; // loops game if gameOver = false
+
+
+const q = query(collection(db, "playerScores"), orderBy("score", "desc"), limit(3));
+
+var unsubscribe1 = onSnapshot(q, (querySnapshot) => {
+    let x_score = 550;
+    c.fillStyle = 'black';
+    c.fillRect(590, 810, 340, 50);
+    c.fillRect(320, 880, 1300, 50);
+    c.font = +parseInt((50)) + 'px monospace';
+    c.fillStyle = 'white';
+    c.fillText('HIGH SCORES:', 600, 850);
+    let ranked = 1
+    let firstStr = '';
+    querySnapshot.forEach((doc) => {
+
+        firstStr += ranked + '.' + doc.data().username + ':' + doc.data().score + "  "
+        ranked += 1
+    })
+    c.fillText(firstStr, 400, 920);
+});
+
+// const q1 = query(collection(db, "playerScores"), orderBy("score", "desc"), limit(2));
+
+// var unsubscribe1 = onSnapshot(q1, (querySnapshot) => {
+//     querySnapshot.forEach((doc) => {
+//         console.log(doc.data().score); // Word is assigned to meteor.
+//         // c.font = +parseInt((50)) + 'px monospace';
+//         // c.fillStyle = 'black';
+//         // c.fillRect(590, 810, 340, 50);
+//         // c.fillRect(540, 880, 340, 50);
+//         c.fillStyle = 'white';
+//         // c.fillText('HIGH SCORES:', 600, 850);
+//         c.fillText(doc.data().username + ':' + doc.data().score, 750, 920);
+//         console.log(doc.data().username);
+//     })
+// });
 
 // Loads background video into HTML
 
@@ -57,7 +95,7 @@ let gameOver = false; // loops game if gameOver = false
 // video.src = "material/spaceBackGroundMoving.mp4";
 // video.muted = true;
 
-titleScreen.addEventListener('click', function () {
+canvas.addEventListener('click', function() {
     titleScreen.style.display = 'none';
     // video.play(); // start playing
     update(); //Start rendering
@@ -79,16 +117,6 @@ c.fillStyle = "white";
 var velocity = 1;
 
 
-
-const q = query(collection(db, "playerScores"), orderBy("score", "desc"), limit(3));
-
-
-var unsubscribe1 = onSnapshot(q, (querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-        console.log(doc.data().score); // Word is assigned to meteor.
-        console.log(doc.data().username);
-    })
-});
 
 
 
@@ -323,7 +351,7 @@ class Life {
 
     constructor() {
 
-        this.life = 3 // set starting lives amount
+        this.life = 1 // set starting lives amount
         this.image;
         this.loadImage()
 
@@ -505,7 +533,7 @@ class Meteor {
         this.unsubscribe = onSnapshot(this.q, (querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 this.word = doc.data().word; // Word is assigned to meteor.
-                console.log('random word' + this.word);
+                // console.log('random word' + this.word);
                 // this.playerScore = doc.data().playerScore;
                 // console.log(this.playerScore);
             })
@@ -819,7 +847,7 @@ class Input {
     // Event listener, handle input, deal with letters, backspace, and enter/spacebar
 
     checkForInput(life) {
-        document.addEventListener('keydown', function (e) {
+        document.addEventListener('keydown', function(e) {
             switch (e.keyCode) {
                 case 13: // enter
                     input.checkWord(life);
