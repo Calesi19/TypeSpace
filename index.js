@@ -52,52 +52,31 @@ const titleScreen = document.getElementById('titleScreen');
 let gameOver = false; // loops game if gameOver = false
 
 
-const q = query(collection(db, "playerScores"), orderBy("score", "desc"), limit(3));
+const q = query(collection(db, "playerScores"), orderBy("score", "desc"), limit(3)); // gets top 3 scores from database
 
 var unsubscribe1 = onSnapshot(q, (querySnapshot) => {
-    let x_score = 550;
+    // add black background to highscores
     c.fillStyle = 'black';
     c.fillRect(590, 810, 340, 50);
     c.fillRect(320, 880, 1300, 50);
+    // print out 'high score'
     c.font = +parseInt((50)) + 'px monospace';
     c.fillStyle = 'white';
     c.fillText('HIGH SCORES:', 600, 850);
+    // add each high score with added text to a string
     let ranked = 1
     let firstStr = '';
     querySnapshot.forEach((doc) => {
-
-        firstStr += ranked + '.' + doc.data().username + ':' + doc.data().score + "  "
-        ranked += 1
-    })
+            firstStr += ranked + '.' + doc.data().username + ':' + doc.data().score + "  "
+            ranked += 1
+        })
+        // print out string of highest scores
     c.fillText(firstStr, 400, 920);
 });
 
-// const q1 = query(collection(db, "playerScores"), orderBy("score", "desc"), limit(2));
-
-// var unsubscribe1 = onSnapshot(q1, (querySnapshot) => {
-//     querySnapshot.forEach((doc) => {
-//         console.log(doc.data().score); // Word is assigned to meteor.
-//         // c.font = +parseInt((50)) + 'px monospace';
-//         // c.fillStyle = 'black';
-//         // c.fillRect(590, 810, 340, 50);
-//         // c.fillRect(540, 880, 340, 50);
-//         c.fillStyle = 'white';
-//         // c.fillText('HIGH SCORES:', 600, 850);
-//         c.fillText(doc.data().username + ':' + doc.data().score, 750, 920);
-//         console.log(doc.data().username);
-//     })
-// });
-
-// Loads background video into HTML
-
-// For some reason, getting rid of these lines breaks the program. There's not a video anymore, though. Weird.
-// var video = document.createElement("video");
-// video.src = "material/spaceBackGroundMoving.mp4";
-// video.muted = true;
 
 canvas.addEventListener('click', function() {
     titleScreen.style.display = 'none';
-    // video.play(); // start playing
     update(); //Start rendering
 })
 
@@ -105,7 +84,6 @@ canvas.addEventListener('click', function() {
 
 canvas.width = 1920 //window.innerWidth
 canvas.height = 1080 //window.innerHeight
-
 
 // Specifies canvas' font attributes.
 
