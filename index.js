@@ -329,7 +329,7 @@ class Life {
 
     constructor() {
 
-        this.life = 1 // set starting lives amount
+        this.life = 3 // set starting lives amount
         this.image;
         this.loadImage()
 
