@@ -21,3 +21,17 @@ Classes:
     * draw()
 * Stars
     * _unfinished_
+* Life
+    * initialization
+    * lose/gain lives
+    * draw()
+* Score
+    * initialization
+    * increment
+    * draw()
+* Player
+    * initialization
+    * hurt/heal states
+    * draw()
+* Meteor
+    * 
