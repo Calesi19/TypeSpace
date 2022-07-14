@@ -10,4 +10,14 @@ game setup:
 * title screen
 * etc
 
-
+Classes:
+* Explosions
+    * initialization
+    * series of frames
+    * draw()
+    * frame counter
+* Planets
+    * initialization
+    * draw()
+* Stars
+    * /*unfinished/*
