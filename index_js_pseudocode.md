@@ -7,6 +7,12 @@ firebase stuff
 
 game setup:
 
+* Bullet list
+    * Nested bullet
+        * Sub-nested bullet etc
+* Bullet list item 2
+
+
  * game loop
 
 * title screen
