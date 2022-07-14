@@ -6,7 +6,9 @@ This file is a basic rundown of index.js, come here before trying to decipher th
 firebase stuff
 
 game setup:
+
   * game loop
+
 * title screen
 * etc
 
