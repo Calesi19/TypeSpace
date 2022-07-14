@@ -34,4 +34,69 @@ Classes:
     * hurt/heal states
     * draw()
 * Meteor
-    * 
+    * initialization
+        * word chosen from database randomly
+        * speed chosen randomly
+    * draw()
+* LifeBonus
+    * initialization
+        * word chosen from database randomly
+        * speed chosen randomly
+    * draw()
+* Laser
+    * initialization
+    * draw()
+* Actors
+    * arrays of other objects:
+        * planet options
+        * current meteors
+        * current lives
+        * current planets
+        * current lasers
+        * current explosions
+    * choosePlanet()
+    * spawnMeteor()
+    * destroyMeteor(index)
+    * spawnLife()
+    * destroyLife(index)
+    * checkActorMatch(targetWord)
+    * spawnPlanet()
+    * destroyPlanet(index)
+    * addExplosion(x, y)
+* Input
+    * initialization
+    * addLetter()
+    * deleteLetter()
+    * checkWord()
+    * checkForInput()
+        * event listener
+
+initialize classes
+
+update()
+* clear screen
+* draw stars
+* draw/remove planets
+* move planets
+* move lasers
+* remove lasers
+* add meteor every 100 frames
+* draw/move meteors
+* draw/move explosions
+* update explosions
+* draw bonus lives
+* remove bonus lives
+* increment score
+* draw score
+* draw player
+* increase overall velocity
+* draw life
+* draw input
+* increase life frequency
+* spawn bonus life
+* check if meteors reached ship
+    * remove/spawn meteor
+    * check end of game
+    * get username
+
+game loop
