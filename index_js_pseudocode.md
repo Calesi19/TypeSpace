@@ -7,7 +7,7 @@ firebase stuff
 
 game setup:
 
-  * game loop
+ * game loop
 
 * title screen
 * etc
