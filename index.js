@@ -244,82 +244,103 @@ class Planet {
 }
 
 class StarsSmall {
-    loadImage() {
+    constructor(x) {
+
+        this.velocity = .6 // Fastest velocity for small stars.
+
+        //load image
+
         const image = new Image()
         image.src = "./material/star_small.png"
         image.onload = () => {
             this.image = image
             this.width = 1920
             this.height = 1080
-            this.position = {
-                x: 0,
-                y: 0
-            }
+            this.x = x
+            this.y = 0
         }
     }
+
+    //Draw image on screen.
+
     draw() {
-        this.loadImage()
-        if (this.image)
+        if (this.image) {
+            this.x = this.x - this.velocity; // Update objects position.
             c.drawImage(
                 this.image,
-                this.position.x,
-                this.position.y,
+                this.x,
+                this.y,
                 this.width,
                 this.height)
+        }
     }
-
 }
+
 class StarsMedium {
-    loadImage() {
+    constructor(x) {
+
+        this.velocity = .4 // Medium velocity for medium stars.
+
+        //load image
+
         const image = new Image()
         image.src = "./material/star_medium.png"
         image.onload = () => {
             this.image = image
             this.width = 1920
             this.height = 1080
-            this.position = {
-                x: 0,
-                y: 0
-            }
+            this.x = x
+            this.y = 0
         }
     }
+
+    //Draw image on screen.
+
     draw() {
-        this.loadImage()
-        if (this.image)
+        if (this.image) {
+            this.x = this.x - this.velocity; // Update objects position.
             c.drawImage(
                 this.image,
-                this.position.x,
-                this.position.y,
+                this.x,
+                this.y,
                 this.width,
                 this.height)
+        }
     }
-
 }
+
+
 class StarsBig {
-    loadImage() {
+    constructor(x) {
+
+        this.velocity = .3 // Slowest velocity for the biggest stars.
+
+        //load image
+
         const image = new Image()
         image.src = "./material/star_big.png"
         image.onload = () => {
             this.image = image
             this.width = 1920
             this.height = 1080
-            this.position = {
-                x: 0,
-                y: 0
-            }
+            this.x = x
+            this.y = 0
         }
     }
+
+    //Draw image on screen.
+
     draw() {
-        this.loadImage()
-        if (this.image)
+        if (this.image) {
+            this.x = this.x - this.velocity; // Update objects position.
             c.drawImage(
                 this.image,
-                this.position.x,
-                this.position.y,
+                this.x,
+                this.y,
                 this.width,
                 this.height)
+        }
     }
-
 }
 
 class Life {
@@ -676,6 +697,9 @@ class Actors {
 
         this.lasers = [];
         this.explosions = [];
+        this.stars_small = [new StarsSmall(0), new StarsSmall(1920)];
+        this.stars_medium = [new StarsMedium(0), new StarsMedium(1920)];
+        this.stars_big = [new StarsBig(0), new StarsBig(1920)];
 
     }
 
@@ -755,8 +779,27 @@ class Actors {
         }
     }
 
+    spawnStarsSmall(){
+        this.stars_small.push(new StarsSmall(1920));
+    }
 
+    destroyStarsSmall(index){
+        this.stars_small.splice(index, 1);
+    }
+    spawnStarsMedium(){
+        this.stars_medium.push(new StarsMedium(1920));
+    }
 
+    destroyStarsMedium(index){
+        this.stars_medium.splice(index, 1);
+    }
+    spawnStarsBig(){
+        this.stars_big.push(new StarsBig(1920));
+    }
+
+    destroyStarsBig(index){
+        this.stars_big.splice(index, 1);
+    }
 
     // Add a new instance of Planet to the "planets" list. (Spawn a planet on screen.)
 
@@ -936,13 +979,6 @@ const actors = new Actors();
 const life = new Life();
 
 
-
-const starsSmall = new StarsSmall();
-const starsMedium = new StarsMedium();
-const starsBig = new StarsBig();
-
-
-
 //Start keyboard key listeners
 
 input.checkForInput(life)
@@ -959,9 +995,39 @@ function update() {
     // Clears the screen from all elements.
 
     c.clearRect(0, 0, canvas.width, canvas.height);
-    starsSmall.draw()
-    starsMedium.draw()
-    starsBig.draw()
+
+    for (var i = 0; i < actors.stars_small.length; i++) {
+        if (actors.stars_small[i].x <= -1920) {
+            actors.destroyStarsSmall(i)
+            actors.spawnStarsSmall()
+        }
+    }
+    for (var i = 0; i < actors.stars_small.length; i++) {
+        actors.stars_small[i].draw()
+    }
+
+    for (var i = 0; i < actors.stars_medium.length; i++) {
+        if (actors.stars_medium[i].x <= -1920) {
+            actors.destroyStarsMedium(i)
+            actors.spawnStarsMedium()
+        }
+    }
+    for (var i = 0; i < actors.stars_medium.length; i++) {
+        actors.stars_medium[i].draw()
+    }
+
+    for (var i = 0; i < actors.stars_big.length; i++) {
+        if (actors.stars_big[i].x <= -1920) {
+            actors.destroyStarsBig(i)
+            actors.spawnStarsBig()
+        }
+    }
+    for (var i = 0; i < actors.stars_big.length; i++) {
+        actors.stars_big[i].draw()
+    }
+
+
+
 
     // Draws next frame of background video.
 
