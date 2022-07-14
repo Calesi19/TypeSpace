@@ -73,10 +73,13 @@ var unsubscribe1 = onSnapshot(q, (querySnapshot) => {
     c.fillText(firstStr, 400, 920);
 });
 
-
+var game_start = 0;
 canvas.addEventListener('click', function() {
-    titleScreen.style.display = 'none';
-    update(); //Start rendering
+    if (game_start == 0){
+        titleScreen.style.display = 'none';
+        update(); //Start rendering
+        game_start = 1
+    }
 })
 
 // Sets canvas dimensions
@@ -651,7 +654,7 @@ class Actors {
 
     constructor() {
 
-        this.ship = [new Player()]
+        
 
         // There are five different planet images stored in a list.
 
@@ -673,6 +676,7 @@ class Actors {
 
         this.lasers = [];
         this.explosions = [];
+    
 
         // When actor's class is initialized, one a list of stars populated with 540 stars are created.
         
@@ -782,6 +786,16 @@ class Actors {
 
     }
 
+    destroyStarsMedium(index){
+        this.stars_medium.splice(index, 1);
+    }
+    spawnStarsBig(){
+        this.stars_big.push(new StarsBig(1920));
+    }
+
+    destroyStarsBig(index){
+        this.stars_big.splice(index, 1);
+    }
 
     // Add a new instance of Planet to the "planets" list. (Spawn a planet on screen.)
 
@@ -1006,12 +1020,9 @@ function update() {
     }
     
 
-    // Draws next frame of background video.
-
-    // c.drawImage(video, 0, 0, 1920, 1080);
-
 
     // Checks if it needs to destroy and spawn a planet.
+
 
     for (var i = 0; i < actors.planets.length; i++) {
         if (actors.planets.length != 0) {
@@ -1097,7 +1108,6 @@ function update() {
         }
     }
 
-    
 
 
     // Draw any bonus lives that have spawned.
@@ -1137,13 +1147,7 @@ function update() {
 
     player.draw()
 
-    /*
 
-    for (var i = 0; i < actors.ship.length; i++) {
-        if (actors.ship.length != 0) {
-            actors.ship[0].draw()
-        }
-    }*/
 
     // Each frame, increase the standard velocity by a small increment.
 
@@ -1177,7 +1181,6 @@ function update() {
             actors.spawnMeteor() // Spawn new meteor.
             life.loseLife(player) // Lose life.
             if (life.getLife() == 0) { // test if lives are gone
-                actors.destroyShip()
                 gameOver = true; // stops game loop
                 
 

@@ -1,17 +1,26 @@
-# TypeSpace
+# Overview
+TypeSpace is a typing game that was created from scratch by our team.  The game challenges typing abilities in a fun way by placing the player in outer space as a spaceship trying to manage the hostile environment of constant asteroids flying at the ship.  The player is given three lives and every time an asteroid crosses the left edge of the screen, a life is lost.  In order to shoot down an asteroid with the spaceship's lasers, the player must type out the target asteroid's word and press 'space' or 'enter' to destroy the asteroid before it reaches the ship.  Another thing to look out for is extra lives that fly across the screen.  These cannot cause you to lose a life, but if you type out life's attached word you can gain another life to help you survive the asteroids you have coming your way.
 
-TypeSpace is a typing game that was created from scratch by our team.  The game challenges typing abilities in a fun way by placing the player in outer space as a spaceship trying to manage the hostile environment of constant asteroids flying at the ship.  The player is given three lives and every time an asteroid crosses across the screen, a life is lost.  In order to shoot down an asteroid with the spaceships lasers, the player must type out the assigned word the specific asteroid has to destroy the asteroid before it reaches the ship.  Another thing to look out for is extra lives that fly across the screen.  These cannot cause you to lose a life but, if you type out the life, you can gain another life to help you survive the asteroids you have coming your way.
+Use the link below to play the game right in your browser, no downloads required! Click to start, type the words that come across the screen, and put in the name you want for scorekeeping. Make sure you put in the same username every time if you want to keep trying for a better score! Simply refresh your page to try again.
 
-## Team Members:
+[Play the game here](https://calesi19.github.io/TypeSpace/)
+
+# Development Environment
+This program was developed in Visual Studio Code primarily using Javascript, with the customary HTML and CSS.
+
+# Collaborators
 * Jake Soulier
 * Carlos Lespin
 * Xander Hunt
 * Richard Nanney
 * Nolan Jeppson
 
-**Play the game here:**
-[TypeSpace](https://calesi19.github.io/TypeSpace/)
+# Useful Websites
+{Make a list of websites that you found helpful in this project}
+* [Web Site Name](http://url.link.goes.here)
+* [Web Site Name](http://url.link.goes.here)
 
-[Trello Board](https://trello.com/b/WbZarUBb/typespace)
-
-
+# Future Work
+* Reorganize and refactor code to be more efficient
+* Boss fight
+* Bigger list of words
