@@ -74,10 +74,13 @@ var unsubscribe1 = onSnapshot(q, (querySnapshot) => {
     c.fillText(firstStr, 400, 920);
 });
 
-
+var game_start = 0;
 canvas.addEventListener('click', function() {
-    titleScreen.style.display = 'none';
-    update(); //Start rendering
+    if (game_start == 0){
+        titleScreen.style.display = 'none';
+        update(); //Start rendering
+        game_start = 1
+    }
 })
 
 // Sets canvas dimensions
