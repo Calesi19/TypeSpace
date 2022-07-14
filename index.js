@@ -13,8 +13,7 @@ import {
     setDoc,
     getDoc,
     orderBy,
-    limit,
-    getDocs
+    limit
 } from 'https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js'
 
 // Database connection credentials and addresses
@@ -37,7 +36,7 @@ const db = getFirestore()
 
 // Play looped music when the site loads.
 
-const music = new Audio('./material/spaceRace.mp3');
+const music = new Audio('./material/audio/spaceRace.mp3');
 music.loop = true;
 music.play()
 
@@ -99,8 +98,6 @@ var velocity = 1;
 
 
 
-
-
 class Explosion {
 
     /*This class holds the all the attributes and methods necessary to display an explosion
@@ -124,38 +121,10 @@ class Explosion {
 
         // "spriteSelection" attribute will choose which sprite frame will be displayed.
 
-        this.spriteSelection = 0
+        this.spriteSelection = 1
 
         // The "sprites" attribute holds all the frames for the explosion animation.
 
-        this.sprites = [
-            './material/explosion/1.png',
-            './material/explosion/2.png',
-            './material/explosion/3.png',
-            './material/explosion/3.png',
-            './material/explosion/4.png',
-            './material/explosion/5.png',
-            './material/explosion/6.png',
-            './material/explosion/6.png',
-            './material/explosion/7.png',
-            './material/explosion/8.png',
-            './material/explosion/9.png',
-            './material/explosion/10.png',
-            './material/explosion/11.png',
-            './material/explosion/12.png',
-            './material/explosion/13.png',
-            './material/explosion/14.png',
-            './material/explosion/15.png',
-            './material/explosion/16.png',
-            './material/explosion/17.png',
-            './material/explosion/18.png',
-            './material/explosion/19.png',
-            './material/explosion/20.png',
-            './material/explosion/21.png',
-            './material/explosion/22.png',
-            './material/explosion/23.png',
-            './material/explosion/24.png'
-        ]
     }
 
     loadImage() {
@@ -163,7 +132,7 @@ class Explosion {
         // Load the explosion frame that will be used.
 
         const image = new Image()
-        image.src = this.sprites[this.spriteSelection]
+        image.src = './material/explosion/' + parseInt(this.spriteSelection) + '.png'
         image.onload = () => {
             const scale = 0.1 + (Math.random() / 4)
             this.image = image
@@ -175,7 +144,7 @@ class Explosion {
     }
 
 
-    // This method draws the meteor on the screen and updates its position.
+    // This method draws the explosion on the screen.
 
     draw() {
 
@@ -208,6 +177,61 @@ class Explosion {
         }
     }
 }
+
+
+
+
+class Star{
+
+    /* This class spawns handles each indiviual star that is in the background.
+    */
+
+    constructor(isStarter) {
+
+        // The "speeder" variable chooses a random value, later to be used to randomize object velocity.
+
+        this.speeder = (Math.floor(Math.random() * 3)) + 1
+
+        // Loads image and sets size and position. 
+        
+        const image = new Image()
+        image.src = './material/stars/star.png'
+        image.onload = () => {
+            const scale = 0.1 + (Math.random() / 4)
+            this.image = image
+            this.width = 20 * scale
+            this.height = 20 * scale
+            if (isStarter){
+            this.x = Math.floor(Math.random() * 1920)
+            }
+            else {
+                this.x = canvas.width - this.width
+            }
+            this.y = Math.floor(Math.random() * 1080)
+        }   
+    }
+
+
+    // This method draws the star on the screen and updates its position.
+
+    draw() {
+
+
+        if (this.image) {
+            this.x = this.x - (.5 * this.speeder);
+            
+            c.drawImage(
+                this.image,
+                this.x,
+                this.y,
+                this.width,
+                this.height)
+        }
+    }
+}
+
+
+
 
 
 class Planet {
@@ -246,105 +270,7 @@ class Planet {
     }
 }
 
-class StarsSmall {
-    constructor(x) {
 
-        this.velocity = .6 // Fastest velocity for small stars.
-
-        //load image
-
-        const image = new Image()
-        image.src = "./material/star_small.png"
-        image.onload = () => {
-            this.image = image
-            this.width = 1920
-            this.height = 1080
-            this.x = x
-            this.y = 0
-        }
-    }
-
-    //Draw image on screen.
-
-    draw() {
-        if (this.image) {
-            this.x = this.x - this.velocity; // Update objects position.
-            c.drawImage(
-                this.image,
-                this.x,
-                this.y,
-                this.width,
-                this.height)
-        }
-    }
-}
-
-class StarsMedium {
-    constructor(x) {
-
-        this.velocity = .4 // Medium velocity for medium stars.
-
-        //load image
-
-        const image = new Image()
-        image.src = "./material/star_medium.png"
-        image.onload = () => {
-            this.image = image
-            this.width = 1920
-            this.height = 1080
-            this.x = x
-            this.y = 0
-        }
-    }
-
-    //Draw image on screen.
-
-    draw() {
-        if (this.image) {
-            this.x = this.x - this.velocity; // Update objects position.
-            c.drawImage(
-                this.image,
-                this.x,
-                this.y,
-                this.width,
-                this.height)
-        }
-    }
-}
-
-
-class StarsBig {
-    constructor(x) {
-
-        this.velocity = .3 // Slowest velocity for the biggest stars.
-
-        //load image
-
-        const image = new Image()
-        image.src = "./material/star_big.png"
-        image.onload = () => {
-            this.image = image
-            this.width = 1920
-            this.height = 1080
-            this.x = x
-            this.y = 0
-        }
-    }
-
-    //Draw image on screen.
-
-    draw() {
-        if (this.image) {
-            this.x = this.x - this.velocity; // Update objects position.
-            c.drawImage(
-                this.image,
-                this.x,
-                this.y,
-                this.width,
-                this.height)
-        }
-    }
-}
 
 class Life {
 
@@ -372,6 +298,8 @@ class Life {
         if (this.life != 5)
             this.life += 1
         player.frameCounter = 15
+        let healAudio = new Audio('./material/audio/heal.wav')
+        healAudio.play()
     }
 
     // This method returns the amount of life points the player currently has.
@@ -387,16 +315,11 @@ class Life {
 
         // Each of these image addresses loads a picture representing different heart (life points) quantities.
 
-        if (this.life == 1) {
-            image.src = './material/life1.png'
-        } else if (this.life == 2) {
-            image.src = './material/life2.png'
-        } else if (this.life == 3) {
-            image.src = './material/life3.png'
-        } else if (this.life == 4) {
-            image.src = './material/life4.png'
-        } else if (this.life == 5) {
-            image.src = './material/life5.png'
+        if (this.life <= 0) {
+            image.src = './material/life/life0.png'
+        }
+        else {
+            image.src = './material/life/life' + parseInt(this.life) + '.png'
         }
 
         image.onload = () => {
@@ -469,20 +392,20 @@ class Player {
 
 
     loadImage() {
-        // Loads ship image.
 
+        // Loads ship image.
 
         const image = new Image()
 
         if (this.frameCounter == 0) {
-            image.src = './material/spaceShip.png'
+            image.src = './material/ship/spaceShip.png'
         }
         if (this.frameCounter > 0) {
-            image.src = './material/spaceShipHealed.png'
+            image.src = './material/ship/spaceShipHealed.png'
             this.frameCounter -= 1
         }
         if (this.frameCounter < 0) {
-            image.src = './material/spaceShipHurt.png'
+            image.src = './material/ship/spaceShipHurt.png'
             this.frameCounter += 1
         }
 
@@ -545,10 +468,14 @@ class Meteor {
 
         this.speeder = (Math.floor(Math.random() * 3)) + 1
 
-        // Loads image and sets size and position. 
+        // This attribute chooses the frame of the meteor gif to be displayed.
 
+        this.frame = 0;
+
+        // Loads image and sets size and position. 
+        
         const image = new Image()
-        image.src = './material/Asteroid.gif'
+        image.src = './material/Asteroid/frame' + parseInt(this.frame) + '.gif'
         image.onload = () => {
             const scale = 0.1 + (Math.random() / 4)
             this.image = image
@@ -559,9 +486,36 @@ class Meteor {
         }
     }
 
+    // This function load the meteor frame that will be used.
+
+    loadImage(){
+        const image = new Image()
+        image.src = './material/Asteroid/frame' + parseInt(0) + '.gif'
+
+        this.frame += 1
+
+        if (this.frame == 32){
+            this.frame = 0;
+        }
+
+        image.onload = () => {
+            const scale = 0.1 + (Math.random() / 4)
+            this.image = image
+            this.width = this.width
+            this.height = this.height
+            this.x = this.x
+            this.y = this.y
+        }
+
+
+    }
+
     // This method draws the meteor on the screen and updates its position.
 
     draw() {
+
+        this.loadImage()
+
         if (this.image) {
             this.x = this.x - (velocity * this.speeder);
             c.font = parseInt((50)) + 'px monospace';
@@ -615,7 +569,7 @@ class LifeBonus {
         // Load image and set size and position.
 
         const image = new Image()
-        image.src = './material/heart.png'
+        image.src = './material/life/heart.png'
         image.onload = () => {
             const scale = 0.1 + (Math.random() / 4)
             this.image = image
@@ -647,25 +601,44 @@ class LifeBonus {
     }
 }
 
+
 class Laser {
+
+    // This class handles creating and drawing the laser.
+
     constructor(objectX, objectY) {
+
+        // Sets the end position the laser is targeting.
 
         this.x = objectX + 100;
         this.y = objectY + 100;
-        this.counter = 5;
+
+        //The counter represents the amount of frames the laser will stay on screen for.
+
+        this.counter = 3;
+
+        // Play laser sound effect when laser is created.
+
+        const laserAudio = new Audio('./material/audio/laser.mp3');
+        laserAudio.volume = .2
+        laserAudio.play()
     }
 
 
-    // Draws the extra life on the screen and updates it position.
+    // Draws the laser on the screen.
 
     draw() {
+
+        // color of laser.
+
         c.strokeStyle = 'red';
-        c.lineWidth = 25;
+
+        // Width of laser.
+
+        c.lineWidth = 15;
 
         // draw a red line
         c.beginPath();
-        // c.moveTo(50, (canvas.height / 2) - (this.height) + 50);
-        // c.lineTo(objectX, objectY);
         c.moveTo(300, canvas.height / 2 - 40)
         c.lineTo(this.x, this.y)
         c.stroke();
@@ -682,7 +655,7 @@ class Actors {
 
         // There are five different planet images stored in a list.
 
-        this.planetChoice = ['./material/planet1.png', './material/planet2.png', './material/planet3.png', './material/planet4.png', './material/planet5.png'];
+        this.planetChoice = ['./material/planets/planet1.png', './material/planets/planet2.png', './material/planets/planet3.png', './material/planets/planet4.png', './material/planets/planet5.png'];
 
         // When actor's class is initialized, three meteors are spawned on the screen.
 
@@ -700,9 +673,17 @@ class Actors {
 
         this.lasers = [];
         this.explosions = [];
-        this.stars_small = [new StarsSmall(0), new StarsSmall(1920)];
-        this.stars_medium = [new StarsMedium(0), new StarsMedium(1920)];
-        this.stars_big = [new StarsBig(0), new StarsBig(1920)];
+        
+
+        // When actor's class is initialized, one a list of stars populated with 540 stars are created.
+        
+        this.stars = [];
+
+        for (let i = 0; i < 1080; i++){
+            this.stars.push(new Star(true))
+            i++
+        }
+        
 
     }
 
@@ -723,12 +704,24 @@ class Actors {
         /* If the list of planet pictures is empty, repopulate the list and pick a random picture.
         Then remove the picture from the list, so that it can't be picked again later on. */
         else {
-            this.planetChoice = ['./material/planet1.png', './material/planet2.png', './material/planet3.png', './material/planet4.png', './material/planet5.png']
+            this.planetChoice = ['./material/planets/planet1.png', './material/planets/planet2.png', './material/planets/planet3.png', './material/planets/planet4.png', './material/planets/planet5.png']
             var choice = Math.floor(Math.random() * this.planetChoice.length)
             var planetAddress = this.planetChoice[choice]
             this.planetChoice.splice(choice, 1);
             return planetAddress
         }
+    }
+
+    // This functions spawns a new star oustside the screen.
+
+    spawnStar() {
+        this.stars.push(new Star(false))
+    }
+
+    // This function removes a star.
+
+    destroyStar(index) {
+        this.stars.splice(index, 1);
     }
 
     // Add a new instance of meteor to the "meteors" list. (Spawn a meteor on screen.)
@@ -742,7 +735,7 @@ class Actors {
     destroyMeteor(index) {
         var xPosition = this.meteors[index].x
         var yPosition = this.meteors[index].y
-        var audio = new Audio('./material/explosion/explosion.wav');
+        var audio = new Audio('./material/audio/explosion.wav');
         audio.play();
         this.addExplosion(xPosition, yPosition)
         this.meteors.splice(index, 1);
@@ -782,15 +775,14 @@ class Actors {
         }
     }
 
-    spawnStarsSmall(){
-        this.stars_small.push(new StarsSmall(1920));
-    }
 
-    destroyStarsSmall(index){
-        this.stars_small.splice(index, 1);
-    }
-    spawnStarsMedium(){
-        this.stars_medium.push(new StarsMedium(1920));
+    // This function removes the ship from the screen and spawns explosion on its spot.
+
+    destroyShip(){
+        this.addExplosion(50, (canvas.height / 2) - (this.ship[0].height) + 25 )
+        this.ship = [];
+
+
     }
 
     destroyStarsMedium(index){
@@ -815,6 +807,8 @@ class Actors {
     destroyPlanet(index) {
         this.planets.splice(index, 1);
     }
+
+    // This function spawns an explosion in a specified position.
 
     addExplosion(xPosition, yPosition) {
         this.explosions.push(new Explosion(xPosition, yPosition))
@@ -857,6 +851,11 @@ class Input {
         for (let character in this.targetWord) {
             current_word = current_word + this.targetWord[character];
         }
+
+        if (current_word == 'GODMODE'){
+            life.life = 999999
+        }
+
         this.targetWord = [];
         actors.checkActorMatch(current_word, life);
     }
@@ -982,6 +981,7 @@ const actors = new Actors();
 const life = new Life();
 
 
+
 //Start keyboard key listeners
 
 input.checkForInput(life)
@@ -992,44 +992,28 @@ var lifeFrequency = 0;
 
 
 
-
 function update() {
 
     // Clears the screen from all elements.
 
     c.clearRect(0, 0, canvas.width, canvas.height);
 
-    for (var i = 0; i < actors.stars_small.length; i++) {
-        if (actors.stars_small[i].x <= -1920) {
-            actors.destroyStarsSmall(i)
-            actors.spawnStarsSmall()
+
+    for (var i = 0; i < actors.stars.length; i++) {
+        if (actors.stars.length != 0) {
+            actors.stars[i].draw()
         }
     }
-    for (var i = 0; i < actors.stars_small.length; i++) {
-        actors.stars_small[i].draw()
-    }
 
-    for (var i = 0; i < actors.stars_medium.length; i++) {
-        if (actors.stars_medium[i].x <= -1920) {
-            actors.destroyStarsMedium(i)
-            actors.spawnStarsMedium()
+    for (var i = 0; i < actors.stars.length; i++) {
+        if (actors.stars.length != 0) {
+            if (actors.stars[i].x < -20) {
+                actors.destroyStar(i)
+                actors.spawnStar()
+            }
         }
     }
-    for (var i = 0; i < actors.stars_medium.length; i++) {
-        actors.stars_medium[i].draw()
-    }
-
-    for (var i = 0; i < actors.stars_big.length; i++) {
-        if (actors.stars_big[i].x <= -1920) {
-            actors.destroyStarsBig(i)
-            actors.spawnStarsBig()
-        }
-    }
-    for (var i = 0; i < actors.stars_big.length; i++) {
-        actors.stars_big[i].draw()
-    }
-
-
+    
 
 
     // Draws next frame of background video.
@@ -1105,6 +1089,16 @@ function update() {
     }
 
 
+    // Update frame used for each explosion displayed on the screen.
+
+    for (var i = 0; i < actors.explosions.length; i++) {
+        if (actors.explosions.length != 0) {
+            if (actors.explosions[i].spriteSelection == 24) {
+                actors.explosions.splice(i, 1)
+            }
+        }
+    }
+
     // Update frame counter for each explosion of the screen.
 
     for (var i = 0; i < actors.explosions.length; i++) {
@@ -1113,15 +1107,7 @@ function update() {
         }
     }
 
-    // Update frame used for each explosion displayed on the screen.
-
-    for (var i = 0; i < actors.explosions.length; i++) {
-        if (actors.explosions.length != 0) {
-            if (actors.explosions[i].spriteSelection == 32) {
-                actors.explosions.splice(i, 1)
-            }
-        }
-    }
+    
 
 
     // Draw any bonus lives that have spawned.
@@ -1143,10 +1129,11 @@ function update() {
     }
 
 
-
     // Increment the player's score in each frame.
 
-    score.increment()
+    if (!gameOver){
+        score.increment()
+    }
 
     // Display the player's current score on the screen.
 
@@ -1156,6 +1143,8 @@ function update() {
     // Draw the player ship on the screen.
 
     player.draw()
+
+
 
     // Each frame, increase the standard velocity by a small increment.
 
@@ -1190,51 +1179,56 @@ function update() {
             life.loseLife(player) // Lose life.
             if (life.getLife() == 0) { // test if lives are gone
                 gameOver = true; // stops game loop
-
-
-
-
-                const username = prompt("Enter your username:", "Username")
-                const playerData = {
-                    username: username.toUpperCase(),
-                    score: Math.floor(score.getScore())
-                }
-                const docRef = doc(db, "playerScores", username.toUpperCase());
-
-
-                getDoc(docRef).then(docSnap => {
-
-                    c.fillText('GAME OVER', 850, 500);
-
-                    if (docSnap.exists()) {
-                        if (docSnap.data().score <= score.getScore()) {
-
-                            setDoc(doc(db, "playerScores", username.toUpperCase()), playerData)
-
-                            c.fillText('YOUR HIGH SCORE: ' + Math.floor(score.getScore()), 850, 600);
-                        } else {
-                            c.fillText('YOUR HIGH SCORE: ' + docSnap.data().score, 850, 600);
-                        }
-                    } else {
-
-                        setDoc(doc(db, "playerScores", username.toUpperCase()), playerData)
-
-                        c.fillText('YOUR HIGH SCORE: ' + Math.floor(score.getScore()), 850, 600);
-                    }
-
-                    c.fillText('YOUR SCORE: ' + Math.floor(score.getScore()), 850, 650);
-                })
+                
 
             }
+        }}
 
+    
+    if (gameOver){
+        const username = prompt("Enter your username:", "Username")
+        const playerData = {
+            username: username.toUpperCase(),
+            score: Math.floor(score.getScore())
         }
-    }
+        const docRef = doc(db, "playerScores", username.toUpperCase());
+
+
+        getDoc(docRef).then(docSnap => {
+
+            c.fillText('GAME OVER', 850, 500);
+
+            if (docSnap.exists()) {
+                if (docSnap.data().score <= score.getScore()) {
+
+                    setDoc(doc(db, "playerScores", username.toUpperCase()), playerData)
+
+                    c.fillText('YOUR HIGH SCORE: ' + Math.floor(score.getScore()), 850, 600);
+                } else {
+                    c.fillText('YOUR HIGH SCORE: ' + docSnap.data().score, 850, 600);
+                }
+                } else {
+
+                    setDoc(doc(db, "playerScores", username.toUpperCase()), playerData)
+
+                    c.fillText('YOUR HIGH SCORE: ' + Math.floor(score.getScore()), 850, 600);
+                }
+                c.fillText('YOUR SCORE: ' + Math.floor(score.getScore()), 850, 650);
+            })
+        }
+    
+
 
     // Runs the game loop
     if (!gameOver) {
         requestAnimationFrame(update); // wait for the browser to be ready to present another animation frame.    
     }
 
-    // requestAnimationFrame(update); // wait for the browser to be ready to present another animation frame.    
 
 }
+
+
+
+
+
+
