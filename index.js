@@ -73,10 +73,13 @@ var unsubscribe1 = onSnapshot(q, (querySnapshot) => {
     c.fillText(firstStr, 400, 920);
 });
 
-
+var game_start = 0;
 canvas.addEventListener('click', function() {
-    titleScreen.style.display = 'none';
-    update(); //Start rendering
+    if (game_start == 0){
+        titleScreen.style.display = 'none';
+        update(); //Start rendering
+        game_start = 1
+    }
 })
 
 // Sets canvas dimensions
@@ -266,7 +269,6 @@ class Planet {
         }
     }
 }
-
 
 
 
@@ -673,6 +675,9 @@ class Actors {
 
         this.lasers = [];
         this.explosions = [];
+        this.stars_small = [new StarsSmall(0), new StarsSmall(1920)];
+        this.stars_medium = [new StarsMedium(0), new StarsMedium(1920)];
+        this.stars_big = [new StarsBig(0), new StarsBig(1920)];
 
         // When actor's class is initialized, one a list of stars populated with 540 stars are created.
         
@@ -774,14 +779,26 @@ class Actors {
         }
     }
 
+
     // This function removes the ship from the screen and spawns explosion on its spot.
 
     destroyShip(){
         this.addExplosion(50, (canvas.height / 2) - (this.ship[0].height) + 25 )
         this.ship = [];
 
+
     }
 
+    destroyStarsMedium(index){
+        this.stars_medium.splice(index, 1);
+    }
+    spawnStarsBig(){
+        this.stars_big.push(new StarsBig(1920));
+    }
+
+    destroyStarsBig(index){
+        this.stars_big.splice(index, 1);
+    }
 
     // Add a new instance of Planet to the "planets" list. (Spawn a planet on screen.)
 
@@ -969,10 +986,6 @@ const life = new Life();
 
 
 
-
-
-
-
 //Start keyboard key listeners
 
 input.checkForInput(life)
@@ -1005,6 +1018,7 @@ function update() {
         }
     }
     
+
 
     // Draws next frame of background video.
 
@@ -1118,9 +1132,6 @@ function update() {
         }
     }
 
-    
-
-    
 
     // Increment the player's score in each frame.
 
