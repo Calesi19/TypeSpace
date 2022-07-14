@@ -653,8 +653,6 @@ class Actors {
 
     constructor() {
 
-        this.ship = [new Player()]
-
         // There are five different planet images stored in a list.
 
         this.planetChoice = ['./material/planets/planet1.png', './material/planets/planet2.png', './material/planets/planet3.png', './material/planets/planet4.png', './material/planets/planet5.png'];
@@ -675,9 +673,7 @@ class Actors {
 
         this.lasers = [];
         this.explosions = [];
-        this.stars_small = [new StarsSmall(0), new StarsSmall(1920)];
-        this.stars_medium = [new StarsMedium(0), new StarsMedium(1920)];
-        this.stars_big = [new StarsBig(0), new StarsBig(1920)];
+        
 
         // When actor's class is initialized, one a list of stars populated with 540 stars are created.
         
@@ -1148,13 +1144,7 @@ function update() {
 
     player.draw()
 
-    /*
 
-    for (var i = 0; i < actors.ship.length; i++) {
-        if (actors.ship.length != 0) {
-            actors.ship[0].draw()
-        }
-    }*/
 
     // Each frame, increase the standard velocity by a small increment.
 
@@ -1188,7 +1178,6 @@ function update() {
             actors.spawnMeteor() // Spawn new meteor.
             life.loseLife(player) // Lose life.
             if (life.getLife() == 0) { // test if lives are gone
-                actors.destroyShip()
                 gameOver = true; // stops game loop
                 
 
