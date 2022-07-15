@@ -16,11 +16,17 @@ This program was developed in Visual Studio Code primarily using Javascript, wit
 * Nolan Jeppson
 
 # Useful Websites
-{Make a list of websites that you found helpful in this project}
-* [Web Site Name](http://url.link.goes.here)
-* [Web Site Name](http://url.link.goes.here)
+The following are resources used to create our web app:
+* [How to take Keyboard Input in Javascript](https://stackoverflow.com/questions4416505how-to-take-keyboard-input-in-javascript)
+* [Basic Introduction to Javascript](https://www.youtube.com/watch?v=W6NZfCO5SIk)
+* [Keycodes for each Keyboard Key](https://www.toptal.com/developers/keycode)
+* [Firestore Database Documentation](https://firebase.google.com/docs)
+* [Basic Javascript Documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+* [Basic Javascript Canvas Documentation](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial)
 
 # Future Work
 * Reorganize and refactor code to be more efficient
 * Boss fight
 * Bigger list of words
+* Proper end screen
+* Transitions

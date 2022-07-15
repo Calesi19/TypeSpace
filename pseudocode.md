@@ -20,7 +20,9 @@ Classes:
     * initialization
     * draw()
 * Stars
-    * _unfinished_
+    * initialization
+    * spawn star
+    * remove star
 * Life
     * initialization
     * lose/gain lives
