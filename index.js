@@ -16,17 +16,45 @@ import {
     limit
 } from 'https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore.js'
 
-// Database connection credentials and addresses
+// Database connection credentials and addresses [KEYS HAVE BEEN REPLACED - REAL KEYS DON'T WORK ANYMORE ANYWAYS]
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDzkj6Fg3lVe__0qb4sy-9gNQVeRP5GXz8",
-    authDomain: "calesi-bd5a0.firebaseapp.com",
+    apiKey: "AIzaSyDzkjadfa3lVe__0qb4sy-9gNQVeRP5GXz8",
+    authDomain: "calesi-bffs50.firebaseapp.com",
     projectId: "calesi-bd5a0",
     storageBucket: "calesi-bd5a0.appspot.com",
     messagingSenderId: "447612983536",
-    appId: "1:447612983536:web:dc3e7570c3182c129a8a35",
+    appId: "1:447623583536:web:dc3e7570c3182c129a8a35",
     measurementId: "G-T4F0T1QG2K"
 };
+
+
+
+
+
+
+
+
+
+
+//*******************IMPORTANT*****************************/
+// SINCE THE FIREBASE DATBASE ISN'T HOSTED ANYMORE, WE WILL HARDCODE A FEW WORDS IN A LIST.
+
+const words = [
+    'APPLE', 'BANANA', 'CARROT', 'DAISY', 'ELEPHANT', 'FROG',
+    'GRAPE', 'HAPPY', 'IGLOO', 'JUMP', 'KITE', 'LEMON',
+    'MONKEY', 'NEST', 'ORANGE', 'PURPLE', 'QUICK', 'RABBIT',
+    'SUN', 'TURTLE'
+  ];
+
+
+
+
+
+
+
+
+
 
 // Establish connection credentials
 
@@ -447,6 +475,7 @@ class Meteor {
 
     constructor() {
 
+
         /* Since there are roughly 6300 words in the database, this variable chooses a random number
         from 0 to 6300. */
 
@@ -464,6 +493,13 @@ class Meteor {
                 // console.log(this.playerScore);
             })
         });
+
+
+        //*******************IMPORTANT*****************************/
+        // SINCE THE FIREBASE DATBASE ISN'T HOSTED ANYMORE, WE WILL HARDCODE A FEW WORDS IN A LIST.
+
+        // Select a random word from the list of words. (this line would be commented out if database wasn't offline.)
+        this.word = words[(Math.floor(Math.random() * 19)) + 1]
 
         // The "speeder" variable chooses a random value, later to be used to randomize object velocity.
 
@@ -561,6 +597,13 @@ class LifeBonus {
                 this.word = doc.data().word; // Word is assigned to meteor.
             })
         });
+
+
+        //*******************IMPORTANT*****************************/
+        // SINCE THE FIREBASE DATBASE ISN'T HOSTED ANYMORE, WE WILL HARDCODE A FEW WORDS IN A LIST.
+
+        // Select a random word from the list of words. (this line would be commented out if database wasn't offline.)
+        this.word = words[(Math.floor(Math.random() * 19)) + 1]
 
 
         // The "speeder" variable chooses a random value, later to be used to randomize object velocity.

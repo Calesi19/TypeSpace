@@ -1,4 +1,7 @@
 # Overview
+
+<img src="material/typespace-demo.gif" width="450px">
+
 TypeSpace is a typing game that was created from scratch by our team.  The game challenges typing abilities in a fun way by placing the player in outer space as a spaceship trying to manage the hostile environment of constant asteroids flying at the ship.  The player is given three lives and every time an asteroid crosses the left edge of the screen, a life is lost.  In order to shoot down an asteroid with the spaceship's lasers, the player must type out the target asteroid's word and press 'space' or 'enter' to destroy the asteroid before it reaches the ship.  Another thing to look out for is extra lives that fly across the screen.  These cannot cause you to lose a life, but if you type out life's attached word you can gain another life to help you survive the asteroids you have coming your way.
 
 Use the link below to play the game right in your browser, no downloads required! Click to start, type the words that come across the screen, and put in the name you want for scorekeeping. Make sure you put in the same username every time if you want to keep trying for a better score! Simply refresh your page to try again.
